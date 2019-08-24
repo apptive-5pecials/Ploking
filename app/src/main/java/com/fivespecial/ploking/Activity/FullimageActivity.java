@@ -3,6 +3,7 @@ package com.fivespecial.ploking.Activity;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -105,9 +106,11 @@ public class FullimageActivity extends AppCompatActivity implements View.OnClick
     private void sendShare(String path) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         File file = new File(path + "/" + FILE_NAME);
+        Uri contentUri = FileProvider.getUriForFile(FullimageActivity.this,
+                getApplicationContext().getPackageName() + ".fileprovider", file);
         Uri uri = Uri.fromFile(file);
         intent.setType("image/jpg");
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_STREAM, contentUri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivity(Intent.createChooser(intent, "Choose"));
