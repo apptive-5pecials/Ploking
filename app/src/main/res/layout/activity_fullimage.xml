@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    >
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/full_image"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        />
+
+    <LinearLayout
+        android:layout_below="@+id/full_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:background="@color/colorPrimary"
+            android:id="@+id/delete"
+            android:text="삭제"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:background="#000"
+            android:id="@+id/share"
+            android:text="공유"/>
+    </LinearLayout>
+</RelativeLayout>
