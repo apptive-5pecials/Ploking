@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "776403496357",
+    "firebase_url": "https://ploking-2e82b.firebaseio.com",
+    "project_id": "ploking-2e82b",
+    "storage_bucket": "ploking-2e82b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776403496357:android:1d4a617ce39f28b2",
+        "android_client_info": {
+          "package_name": "com.fivespecial.ploking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776403496357-dnf9p98aama2c2gd6ouhi1fp9a0mvgvm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fivespecial.ploking",
+            "certificate_hash": "02e28f226af81ddd142a901f6bd5df9852ab9bf8"
+          }
+        },
+        {
+          "client_id": "776403496357-fl7qig8scc9qri2odgdp0i6c9tu7cbrg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fivespecial.ploking",
+            "certificate_hash": "72035d48f4bef44a6f6ee2ccb89b8967560b2780"
+          }
+        },
+        {
+          "client_id": "776403496357-p9ds6lhv133j6qjqeso1enp0r61afpgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZpFHHQE-IVHnRbEBy6nPIJO0mDyxku64"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "776403496357-p9ds6lhv133j6qjqeso1enp0r61afpgd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
