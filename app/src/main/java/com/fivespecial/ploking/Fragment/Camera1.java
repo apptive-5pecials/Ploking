@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fivespecial.ploking.Activity.MainActivity;
+import com.fivespecial.ploking.Activity.TabbedActivity;
 import com.fivespecial.ploking.AdapterEtc.CameraUtil;
 import com.fivespecial.ploking.AdapterEtc.DbHelper;
 import com.fivespecial.ploking.R;
@@ -97,12 +98,11 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
             camera.setParameters(parameters);
             camera.setDisplayOrientation(result);
             camera.setPreviewTexture(surface);
+            camera.startPreview();
         } catch(Exception e) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.detach(this).attach(this).commit();
         }
-
-        camera.startPreview();
 
     }
     @Override
@@ -171,7 +171,7 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
                         e.printStackTrace();
                     }
                     dbHelper.insertData(path,FILE_NAME);
-                    ((MainActivity)getActivity()).refresh();
+                    ((TabbedActivity)getActivity()).refresh();
                     camera.startPreview();
 
                 }
