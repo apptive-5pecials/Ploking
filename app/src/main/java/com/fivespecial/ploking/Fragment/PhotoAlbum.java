@@ -28,7 +28,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PhotoAlbum extends Fragment implements View.OnClickListener {
+public class PhotoAlbum extends Fragment {
 
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -56,7 +56,6 @@ public class PhotoAlbum extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.photoalbum, null, false);
 
-
         recyclerView = view.findViewById(R.id.recyclerView);
         linearLayoutManager = new LinearLayoutManager(getContext());
         list = new ArrayList<Album>();
@@ -71,10 +70,6 @@ public class PhotoAlbum extends Fragment implements View.OnClickListener {
 
         recyclerView.setAdapter(adapter);
 
-        Button button;
-        button = (Button) view.findViewById(R.id.refresh);
-        button.setOnClickListener(this);
-
         adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -88,13 +83,7 @@ public class PhotoAlbum extends Fragment implements View.OnClickListener {
             }
         });
 
-
         return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-        refresh();
     }
 
     @Override
@@ -109,8 +98,6 @@ public class PhotoAlbum extends Fragment implements View.OnClickListener {
     }
 
     public void refresh() {
-
-
        FragmentTransaction transaction = getFragmentManager().beginTransaction();
        transaction.detach(this).attach(this).commit();
    }

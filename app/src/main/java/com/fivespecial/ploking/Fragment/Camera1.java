@@ -22,7 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.fivespecial.ploking.Activity.MainActivity;
 import com.fivespecial.ploking.AdapterEtc.CameraUtil;
 import com.fivespecial.ploking.AdapterEtc.DbHelper;
 import com.fivespecial.ploking.R;
@@ -36,8 +38,6 @@ import java.util.List;
 
 
 public class Camera1 extends Fragment implements TextureView.SurfaceTextureListener, View.OnClickListener {
-
-
     TextureView textureView;
     ImageView imageView,preimg;
 
@@ -46,13 +46,8 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
     android.hardware.Camera.Size previewSize;
     DbHelper dbHelper;
     PhotoAlbum photoAlbum;
-
-
     String path;
     String FILE_NAME;
-
-  
-
 
     public static Camera1 newInstance(){
         return new Camera1();
@@ -86,30 +81,28 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
     }
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-
-        camera= android.hardware.Camera.open();
-
-        android.hardware.Camera.Parameters parameters=camera.getParameters();
-        supportedPreviewSizes= ((Camera.Parameters) parameters).getSupportedPreviewSizes();
-        if(supportedPreviewSizes != null){
-            previewSize= CameraUtil.getOptimalPreviewSize(supportedPreviewSizes, width, height);
-            ((Camera.Parameters) parameters).setPreviewSize(previewSize.width, previewSize.height);
-        }
-        int result=CameraUtil.setCameraDisplayOrientation(getActivity(), 0);
-        ((Camera.Parameters) parameters).setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-        ((Camera.Parameters) parameters).setRotation(result);
-
-        camera.setParameters(parameters);
-
-        camera.setDisplayOrientation(result);
         try{
+            camera= android.hardware.Camera.open();
+
+            android.hardware.Camera.Parameters parameters=camera.getParameters();
+            supportedPreviewSizes= ((Camera.Parameters) parameters).getSupportedPreviewSizes();
+            if(supportedPreviewSizes != null){
+                previewSize= CameraUtil.getOptimalPreviewSize(supportedPreviewSizes, width, height);
+                ((Camera.Parameters) parameters).setPreviewSize(previewSize.width, previewSize.height);
+            }
+            int result=CameraUtil.setCameraDisplayOrientation(getActivity(), 0);
+            ((Camera.Parameters) parameters).setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            ((Camera.Parameters) parameters).setRotation(result);
+
+            camera.setParameters(parameters);
+            camera.setDisplayOrientation(result);
             camera.setPreviewTexture(surface);
-        }catch (Exception e){
+        } catch(Exception e) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.detach(this).attach(this).commit();
         }
 
         camera.startPreview();
-
-
 
     }
     @Override
@@ -118,8 +111,6 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
     }
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-
-
         return false;
     }
     @Override
@@ -134,7 +125,6 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
                 @Override
                 public void onPictureTaken(byte[] data, Camera camera) {
                     int i;
-
                     FileOutputStream fos = null;
                     Bitmap bmp = BitmapFactory.decodeByteArray(data,0,data.length);
 
@@ -181,8 +171,7 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
                         e.printStackTrace();
                     }
                     dbHelper.insertData(path,FILE_NAME);
-
-
+                    ((MainActivity)getActivity()).refresh();
                     camera.startPreview();
 
                 }
@@ -204,6 +193,7 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
             camera.stopPreview();
             camera.release();
             camera = null;
+
         }
     }
 }

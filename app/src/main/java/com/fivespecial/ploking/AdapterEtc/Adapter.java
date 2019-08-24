@@ -57,10 +57,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             ((Activity)itemView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int devicewidth = displaymetrics.widthPixels / 3;
-            int deviceheight = displaymetrics.heightPixels / 4;
 
             img.getLayoutParams().width = devicewidth;
-            img.getLayoutParams().height = deviceheight;
+            img.getLayoutParams().height = devicewidth;
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

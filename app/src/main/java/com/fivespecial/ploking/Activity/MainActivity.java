@@ -1,9 +1,12 @@
 package com.fivespecial.ploking.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 
 import com.fivespecial.ploking.AdapterEtc.Adapter;
 import com.fivespecial.ploking.AdapterEtc.DbHelper;
@@ -31,8 +34,10 @@ public class MainActivity extends AppCompatActivity {
         vpadater = new ViewpagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(vpadater);
 
+    }
 
-
-
+    public void refresh(){
+        PhotoAlbum album = (PhotoAlbum)vpadater.getFragment(1);
+        album.refresh();
     }
 }

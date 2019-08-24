@@ -11,12 +11,4 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="갱신"
-        android:id="@+id/refresh"
-        />
-
-
 </FrameLayout>

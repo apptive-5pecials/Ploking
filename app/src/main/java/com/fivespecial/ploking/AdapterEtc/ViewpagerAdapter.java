@@ -29,7 +29,6 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         switch (i){
-
             case 0:
                 return new Camera1().newInstance();
             case 1:
