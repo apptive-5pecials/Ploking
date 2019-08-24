@@ -6,8 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.fivespecial.ploking.Fragment.Camera1;
-import com.fivespecial.ploking.Fragment.PhotoAlbum;
+import com.fivespecial.ploking.Fragment.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,13 +15,14 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
 
     private FragmentManager mFragmentManager;
     private Map<Integer,String> mFragmentTags;
-    private static int NUM_ITEMS=2;
+    private int PageCount;
 
 
-    public ViewpagerAdapter(FragmentManager fm) {
+    public ViewpagerAdapter(FragmentManager fm, int pageCount) {
         super(fm);
         mFragmentManager = fm;
         mFragmentTags= new HashMap<Integer, String>();
+        this.PageCount = pageCount;
 
     }
 
@@ -30,9 +30,15 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i){
             case 0:
-                return new Camera1().newInstance();
+                return new HomeFragment().newInstance();
             case 1:
-                return new PhotoAlbum().newInstance();
+                return new CameraFragment().newInstance();
+            case 2:
+                return new AlbumFragment().newInstance();
+            case 3:
+                return new GPSFragment().newInstance();
+            case 4:
+                return new SettingFragment().newInstance();
             default:
                 return null;
         }
@@ -40,7 +46,7 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return NUM_ITEMS;
+        return PageCount;
     }
 
     @Override

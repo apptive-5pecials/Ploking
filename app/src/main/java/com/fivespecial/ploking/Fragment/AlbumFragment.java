@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +27,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PhotoAlbum extends Fragment {
+public class AlbumFragment extends Fragment {
 
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -38,12 +37,12 @@ public class PhotoAlbum extends Fragment {
     ViewpagerAdapter vpadpater;
     Context mContext;
 
-    public PhotoAlbum(){
+    public AlbumFragment(){
 
     }
 
-    public static PhotoAlbum newInstance(){
-        return new PhotoAlbum();
+    public static AlbumFragment newInstance(){
+        return new AlbumFragment();
     }
 
     public void onCreate(Bundle saveInstanceState){
@@ -54,7 +53,7 @@ public class PhotoAlbum extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.photoalbum, null, false);
+        View view = inflater.inflate(R.layout.fragment_album, null, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         linearLayoutManager = new LinearLayoutManager(getContext());

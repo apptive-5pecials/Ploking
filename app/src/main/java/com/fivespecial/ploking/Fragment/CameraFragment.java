@@ -24,7 +24,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.fivespecial.ploking.Activity.MainActivity;
 import com.fivespecial.ploking.Activity.TabbedActivity;
 import com.fivespecial.ploking.AdapterEtc.CameraUtil;
 import com.fivespecial.ploking.AdapterEtc.DbHelper;
@@ -38,7 +37,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class Camera1 extends Fragment implements TextureView.SurfaceTextureListener, View.OnClickListener {
+public class CameraFragment extends Fragment implements TextureView.SurfaceTextureListener, View.OnClickListener {
     TextureView textureView;
     ImageView imageView,preimg;
 
@@ -46,12 +45,12 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
     List<Camera.Size> supportedPreviewSizes;
     android.hardware.Camera.Size previewSize;
     DbHelper dbHelper;
-    PhotoAlbum photoAlbum;
+    AlbumFragment albumFragment;
     String path;
     String FILE_NAME;
 
-    public static Camera1 newInstance(){
-        return new Camera1();
+    public static CameraFragment newInstance(){
+        return new CameraFragment();
     }
 
     public void onCreate(Bundle saveInstanceState){
@@ -61,7 +60,7 @@ public class Camera1 extends Fragment implements TextureView.SurfaceTextureListe
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.camera, null, false);
+        View view = inflater.inflate(R.layout.frament_camera, null, false);
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 200);
 
