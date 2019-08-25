@@ -16,8 +16,8 @@ public class SettingFragment extends Fragment {
 
     TextView log_out,wifi,saver,tag,feedback,licence,version;
 
-    public static CameraFragment newInstance(){
-        return new CameraFragment();
+    public static SettingFragment newInstance(){
+        return new SettingFragment();
     }
 
     public SettingFragment() {

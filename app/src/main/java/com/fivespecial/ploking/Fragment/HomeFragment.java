@@ -17,8 +17,8 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public static AlbumFragment newInstance(){
-        return new AlbumFragment();
+    public static HomeFragment newInstance(){
+        return new HomeFragment();
     }
 
     @Override

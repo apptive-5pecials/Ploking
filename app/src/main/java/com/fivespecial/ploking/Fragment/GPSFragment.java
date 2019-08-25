@@ -13,8 +13,8 @@ import com.fivespecial.ploking.R;
 
 public class GPSFragment extends Fragment {
 
-    public static CameraFragment newInstance(){
-        return new CameraFragment();
+    public static GPSFragment newInstance(){
+        return new GPSFragment();
     }
 
     public GPSFragment() {

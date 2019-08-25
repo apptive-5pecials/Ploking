@@ -40,7 +40,7 @@ public class TabbedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tabbed);
         context = getApplicationContext();
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs) ;
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView(R.drawable.home)));
         tabLayout.addTab(tabLayout.newTab().setCustomView(createTabView(R.drawable.picture)));
@@ -71,7 +71,7 @@ public class TabbedActivity extends AppCompatActivity {
 
     public void refresh(){
         AlbumFragment album = (AlbumFragment)vpadater.getFragment(1);
-            album.refresh();
+        album.refresh();
     }
 
     private View createTabView(int tabIcon) {
