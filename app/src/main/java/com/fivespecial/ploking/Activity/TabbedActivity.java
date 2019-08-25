@@ -73,7 +73,7 @@ public class TabbedActivity extends AppCompatActivity {
     private View createTabView(int tabIcon) {
         View tabView = LayoutInflater.from(context).inflate(R.layout.custom_tab,null);
         ImageView tab_icon = (ImageView)tabView.findViewById(R.id.tab_icon);
-        if(tabIcon == R.drawable.home) tab_icon.setPadding(40, 40, 40, 40);
+        if(tabIcon == R.drawable.home) tab_icon.setPadding(45, 45, 45, 45);
         tab_icon.setImageResource(tabIcon);
         return tabView;
     }

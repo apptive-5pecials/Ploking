@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.fivespecial.ploking.R;
 
 public class SettingFragment extends Fragment {
-
-    TextView log_out,wifi,saver,tag,feedback,licence,version;
 
     public static SettingFragment newInstance(){
         return new SettingFragment();
@@ -35,14 +34,6 @@ public class SettingFragment extends Fragment {
 
         View view;
         view = inflater.inflate(R.layout.fragment_setting, null);
-
-        log_out = (TextView)view.findViewById(R.id.log_out);
-        wifi = (TextView)view.findViewById(R.id.wifi);
-        saver = (TextView)view.findViewById(R.id.saver);
-        tag = (TextView)view.findViewById(R.id.tag);
-        feedback = (TextView)view.findViewById(R.id.feedback);
-        licence = (TextView)view.findViewById(R.id.licence);
-        version = (TextView)view.findViewById(R.id.version);
 
         return view;
     }
