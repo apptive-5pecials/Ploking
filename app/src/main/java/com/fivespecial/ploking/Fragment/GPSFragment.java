@@ -13,22 +13,22 @@ import com.fivespecial.ploking.R;
 
 public class GPSFragment extends Fragment {
 
-    public static GPSFragment newInstance(){
-        return new GPSFragment();
-    }
-
     public GPSFragment() {
 
     }
 
+    public static GPSFragment newInstance(){
+        return new GPSFragment();
+    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle saveInstanceState) {
+        super.onCreate(saveInstanceState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view;
         view = inflater.inflate(R.layout.fragment_gps, null);

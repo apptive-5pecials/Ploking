@@ -28,11 +28,7 @@ public class TabbedActivity extends AppCompatActivity {
     AlbumFragment albumFragment;
     Adapter adapter;
 
-    //ViewPager2 myViewPager2;
-    //MyAdapter MyAdapter;
     private ArrayList<String> arrayList = new ArrayList<>();
-
-    public  static DbHelper sqLiteHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +73,7 @@ public class TabbedActivity extends AppCompatActivity {
     private View createTabView(int tabIcon) {
         View tabView = LayoutInflater.from(context).inflate(R.layout.custom_tab,null);
         ImageView tab_icon = (ImageView)tabView.findViewById(R.id.tab_icon);
+        if(tabIcon == R.drawable.home) tab_icon.setPadding(40, 40, 40, 40);
         tab_icon.setImageResource(tabIcon);
         return tabView;
     }
