@@ -2,18 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fivespecial.ploking">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.FullimageActivity"></activity>
+        <activity android:name=".Activity.LoginActivity"></activity>
+        <activity
+            android:name=".Activity.TabbedActivity"
+            android:theme="@style/TabTheme" />
+        <activity android:name=".Activity.FullimageActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +26,6 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
-
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -33,6 +33,16 @@
                 android:resource="@xml/file_provider" />
         </provider>
 
+        <meta-data
+            android:name="com.naver.maps.map.0fwsvimx0a"
+            android:value="0fwsvimx0a" />
+
     </application>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
 </manifest>

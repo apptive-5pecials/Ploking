@@ -1,43 +1,57 @@
 package com.fivespecial.ploking.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
 
-import com.fivespecial.ploking.AdapterEtc.Adapter;
-import com.fivespecial.ploking.AdapterEtc.DbHelper;
-import com.fivespecial.ploking.Fragment.PhotoAlbum;
-import com.fivespecial.ploking.AdapterEtc.ViewpagerAdapter;
 import com.fivespecial.ploking.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    ViewPager viewPager;
-    ViewpagerAdapter vpadater;
-    PhotoAlbum photoAlbum;
-    Adapter adapter;
-
-    public  static DbHelper sqLiteHelper;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE= 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sqLiteHelper = new DbHelper(this);
+        //권한 요청
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        viewPager = findViewById(R.id.viewpager);
-        vpadater = new ViewpagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(vpadater);
+        //권한 설정이 되어 있는지 확인
+        if(permissionCheck != PackageManager.PERMISSION_GRANTED){
 
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){}
+            else{
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}
+                        , LOCATION_PERMISSION_REQUEST_CODE);
+            }
+        }
+
+        Intent intent = new Intent(this, TabbedActivity.class);
+        startActivity(intent);
+        finish();
+
+
+
+        /*
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent1 = new Intent(getBaseContext(),TabbedActivity.class);
+                startActivity(intent1);
+                finish();
+            }
+        }, 2000);
+
+         */
     }
 
-    public void refresh(){
-        PhotoAlbum album = (PhotoAlbum)vpadater.getFragment(1);
-        album.refresh();
-    }
 }

@@ -12,8 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.fivespecial.ploking.Fragment.PhotoAlbum;
+import com.fivespecial.ploking.Fragment.AlbumFragment;
 import com.fivespecial.ploking.MemberClass.Album;
 import com.fivespecial.ploking.R;
 
@@ -22,10 +21,8 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-
-
     private List<Album> albumlist;
-    private PhotoAlbum activity;
+    private AlbumFragment activity;
 
     public interface  OnItemClickListener{
         void onItemClick(View v, int pos);
@@ -39,7 +36,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
 
-    public Adapter(PhotoAlbum activity, List<Album> albumlist){
+    public Adapter(AlbumFragment activity, List<Album> albumlist){
         this.activity= activity;
         this.albumlist= albumlist;
     }
