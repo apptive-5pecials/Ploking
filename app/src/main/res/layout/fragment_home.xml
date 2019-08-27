@@ -78,6 +78,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/button_trash"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="right|bottom"

@@ -43,4 +43,3 @@ dependencies {
     //FusedLocationSource
     implementation 'com.naver.maps:map-sdk:3.5.0'
 }
-

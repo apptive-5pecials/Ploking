@@ -3,7 +3,6 @@ package com.fivespecial.ploking.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+/*
         Intent intent = new Intent(this, TabbedActivity.class);
         startActivity(intent);
         finish();
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*
+        */
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -49,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
                 finish();
             }
-        }, 2000);
+        }, 500);
 
-         */
+
     }
 
 }
