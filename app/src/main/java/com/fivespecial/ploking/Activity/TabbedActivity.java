@@ -20,8 +20,6 @@ import java.util.ArrayList;
 
 public class TabbedActivity extends AppCompatActivity {
 
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
-
     ViewPager viewPager;
     ViewpagerAdapter vpadater;
     private Context context;

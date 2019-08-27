@@ -37,4 +37,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    //naver maps
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    //FusedLocationSource
+    implementation 'com.naver.maps:map-sdk:3.5.0'
 }
