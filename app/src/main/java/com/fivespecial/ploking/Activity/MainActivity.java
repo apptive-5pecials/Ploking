@@ -14,12 +14,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/*
         Intent intent = new Intent(this, TabbedActivity.class);
         startActivity(intent);
         finish();
 
-        /*
+        */
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
                 finish();
             }
-        }, 2000);
+        }, 500);
 
-         */
+
     }
 
 }
