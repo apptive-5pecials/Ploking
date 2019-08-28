@@ -24,7 +24,6 @@
         <activity
             android:name=".Activity.TabbedActivity"
             android:theme="@style/TabTheme" />
-        <activity android:name=".Activity.FullimageActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
