@@ -3,6 +3,7 @@ package com.fivespecial.ploking.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -42,6 +43,7 @@ import com.naver.maps.map.util.FusedLocationSource;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
 
 public class GPSFragment extends Fragment {
 
@@ -213,6 +215,13 @@ public class GPSFragment extends Fragment {
         //Set the last latitude and longitude
         lastLat=currentLat;
         lastLon=currentLon;
+
+        SharedPreferences pref= getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putLong("lat", Double.doubleToRawLongBits(lastLat));
+        editor.putLong("lon", Double.doubleToRawLongBits(lastLon));
+        editor.commit();
+
         //GPS end...
 
 
@@ -334,6 +343,12 @@ public class GPSFragment extends Fragment {
                     //get the current lat and long
                     currentLat = loc.getLatitude();
                     currentLon = loc.getLongitude();
+
+                    SharedPreferences pref= getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putLong("lat", Double.doubleToRawLongBits(lastLat));
+                    editor.putLong("lon", Double.doubleToRawLongBits(lastLon));
+                    editor.commit();
 
                     if(tButtonclicked){
                         lastLat = currentLat;

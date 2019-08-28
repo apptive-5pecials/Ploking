@@ -77,6 +77,8 @@ public class AlbumFragment extends Fragment {
                 args.putString("key","value");
                 args.putString("name",photo.getFile_name());
                 args.putString("path",photo.getPath());
+                args.putDouble("longitude", photo.getLongitude());
+                args.putDouble("latitude", photo.getLatitude());
                 FragmentDialog dialog=new FragmentDialog();
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
