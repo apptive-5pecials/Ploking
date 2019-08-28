@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -49,12 +51,17 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
     String path;
     String FILE_NAME;
 
+    SoundPool pool;
+    int ddok;
+
     public static CameraFragment newInstance(){
         return new CameraFragment();
     }
 
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+                pool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        ddok=pool.load(getContext(),R.raw.sound,1);
     }
 
     @Nullable
@@ -120,10 +127,11 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
     @Override
     public void onClick(View v) {
         if(camera != null){
+            pool.play(ddok,1,0.5f,0,0,1);
             camera.takePicture(null, null, new Camera.PictureCallback() {
                 @Override
                 public void onPictureTaken(byte[] data, Camera camera) {
-                    int i;
+
                     FileOutputStream fos = null;
                     Bitmap bmp = BitmapFactory.decodeByteArray(data,0,data.length);
 
@@ -163,6 +171,7 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
                         File f= new File(path,FILE_NAME);
                         Bitmap b= BitmapFactory.decodeStream(new FileInputStream(f));
                         preimg.setImageBitmap(b);
+                        preimg.setScaleType(ImageView.ScaleType.FIT_XY);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }

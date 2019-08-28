@@ -54,33 +54,66 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        ></LinearLayout>
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/graph"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="3">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <fragment
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/compass"
                 android:name="com.fivespecial.ploking.Fragment.CompassFragment"/>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가장 가까운 쓰레기통"
+                android:textSize="14.7sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="부산대역앞"
+                android:textSize="14.7sp"
+                android:textColor="#3ea055"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여기서 560m"
+                android:textSize="14.7sp"/>
+        </LinearLayout>
+
+
 
         <ImageView
+            android:layout_weight="1"
             android:id="@+id/button_trash"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="0dp"
+            android:layout_height="65.5dp"
             android:layout_gravity="right|bottom"
             android:src="@drawable/button_trash" />
 
