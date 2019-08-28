@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00ffffff"
+    >
+    <LinearLayout
+        android:background="#00ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/greenbox"
+        android:weightSum="2">
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="47.6dp"
+            android:layout_gravity="right"
+            android:src="@drawable/greenbox"
+            />
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:layout_below="@+id/greenbox"
+
+        android:scaleType="fitXY"
+        android:id="@+id/dailog_img"
+        android:layout_width="match_parent"
+        android:layout_height="352dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/dailog_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="6"
+        >
+
+        <ImageView
+            android:layout_weight="0.5"
+            android:id="@+id/dailog_delete"
+            android:layout_marginLeft="9.9dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete_button"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"/>
+        <ImageView
+            android:layout_weight="0.5"
+            android:id="@+id/dialog_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/share_button"/>
+    </LinearLayout>
+
+</RelativeLayout>

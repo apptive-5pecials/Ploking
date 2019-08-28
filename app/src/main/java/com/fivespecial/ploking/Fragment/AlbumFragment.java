@@ -1,6 +1,7 @@
 package com.fivespecial.ploking.Fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fivespecial.ploking.Activity.FullimageActivity;
 import com.fivespecial.ploking.AdapterEtc.Adapter;
 import com.fivespecial.ploking.AdapterEtc.DbHelper;
 import com.fivespecial.ploking.AdapterEtc.ViewpagerAdapter;
@@ -73,14 +73,22 @@ public class AlbumFragment extends Fragment {
             @Override
             public void onItemClick(View v, int pos) {
                 Album photo = list.get(pos);
-                Intent intent = new Intent(getContext(), FullimageActivity.class);
-                intent.putExtra("name",photo.getFile_name());
-                intent.putExtra("path",photo.getPath());
-                intent.putExtra("id",photo.getId());
-
-                startActivityForResult(intent, 105);
+                Bundle args= new Bundle();
+                args.putString("key","value");
+                args.putString("name",photo.getFile_name());
+                args.putString("path",photo.getPath());
+                FragmentDialog dialog=new FragmentDialog();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        refresh();
             }
         });
+                dialog.setArguments(args);
+                dialog.show(getActivity().getSupportFragmentManager(),"tag");
+            }
+        });
+
 
         return view;
     }

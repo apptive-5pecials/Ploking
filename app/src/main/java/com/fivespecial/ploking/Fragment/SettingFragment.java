@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.fivespecial.ploking.R;
 
-public class SettingFragment extends Fragment {
+public class  SettingFragment extends Fragment {
 
     public static SettingFragment newInstance(){
         return new SettingFragment();

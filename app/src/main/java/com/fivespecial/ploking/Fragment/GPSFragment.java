@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.fivespecial.ploking.R;
 
@@ -34,4 +35,6 @@ public class GPSFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_gps, null);
         return view;
     }
+
+   
 }
