@@ -24,6 +24,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.fivespecial.ploking.Maps.BinLocation;
+import com.fivespecial.ploking.Maps.DataAdapter;
 import com.fivespecial.ploking.R;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
@@ -36,6 +38,8 @@ import com.naver.maps.map.overlay.LocationOverlay;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
+
+import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -59,6 +63,9 @@ public class GPSFragment extends Fragment {
         }
     }
 
+    //garbage bins
+    public List<BinLocation> binLocationList;
+    BinLocation binLocation;
 
     //txtTimer
     TextView txtDistance;
@@ -227,6 +234,8 @@ public class GPSFragment extends Fragment {
     public void onMapReady(@NonNull NaverMap naverMap) {
 
         double longitude, latitude;
+        double dLat, dLong;
+        final InfoWindow binsInfo = new InfoWindow();
 
         final LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         Location location;
@@ -240,26 +249,38 @@ public class GPSFragment extends Fragment {
         locationOverlay.setVisible(true);
 
         //marker
-        final InfoWindow binsInfo = new InfoWindow();
-        binsInfo.setPosition(new LatLng(35.2315244, 129.0848256));
-        binsInfo.setAdapter(new InfoWindowAdapter(getActivity()));
-        binsInfo.setOnClickListener(overlay -> {
+        initLoadDB();
+
+        naverMap.setOnMapClickListener((coord, point) -> {
             binsInfo.close();
-            return true;
         });
 
+        for(int i = 0; i < binLocationList.size(); i++){
+            binLocation = binLocationList.get(i);
 
-        Marker bins = new Marker();
-        bins.setPosition(new LatLng(35.2315244,129.0848256));
-        bins.setIcon(OverlayImage.fromResource(R.drawable.bin_marker));
-        bins.setHeight(120);
-        bins.setWidth(120);
-        bins.setOnClickListener(overlay -> {
-            binsInfo.open(bins);
-            return true;
-        });
-        bins.setTag("부산대 정문(칠성사이다)");
-        bins.setMap(naverMap);
+            dLat = Double.parseDouble(binLocation.latitude);
+            dLong = Double.parseDouble(binLocation.longitude);
+
+//            final InfoWindow binsInfo = new InfoWindow();
+//            binsInfo.setPosition(new LatLng(dLat, dLong));
+            binsInfo.setAdapter(new InfoWindowAdapter(getActivity()));
+            binsInfo.setOnClickListener(overlay -> {
+                binsInfo.close();
+                return true;
+            });
+
+
+            Marker bins = new Marker();
+            bins.setPosition(new LatLng(dLat, dLong));
+            bins.setIcon(OverlayImage.fromResource(R.drawable.bin_marker));
+            bins.setOnClickListener(overlay -> {
+                binsInfo.open(bins);
+                return true;
+            });
+            bins.setTag(binLocation.getDescription());
+            bins.setMap(naverMap);
+        }
+
 
 
         try {
@@ -412,6 +433,19 @@ public class GPSFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void initLoadDB(){
+
+        DataAdapter mDBHelper = new DataAdapter(getActivity());
+        mDBHelper.createDatabase();
+        mDBHelper.open();
+
+        //db에 있는 값들을 model에 적용해서 넣는다.
+        binLocationList = mDBHelper.getTableData();
+
+        //db 닫기;
+        mDBHelper.close();
     }
 
 
