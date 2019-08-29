@@ -39,15 +39,15 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         sql = "CREATE TABLE IF NOT EXISTS Photo ( _id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "path TEXT, file_name TEXT);";
+                "path TEXT, file_name TEXT, longitude REAL, latitude REAL);";
         db.execSQL(sql);
     }
 
 
 
-    public void insertData(String path, String file_name){
+    public void insertData(String path, String file_name, Double longitude, Double latitude){
         SQLiteDatabase db= getWritableDatabase();
-        db.execSQL("INSERT INTO Photo VALUES(null,'"+path+"','"+file_name+"')");
+        db.execSQL("INSERT INTO Photo VALUES(null,'"+path+"','"+file_name+"',"+longitude+","+latitude+")");
         db.close();
     }
 
@@ -76,6 +76,8 @@ public class DbHelper extends SQLiteOpenHelper {
             album.setFile_name(file_name);
             album.setPath(path);
             stringBuffer.append(album);
+            album.setLongitude(cursor.getDouble(cursor.getColumnIndexOrThrow("longitude")));
+            album.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow("latitude")));
             data.add(album);
         }
         return data;

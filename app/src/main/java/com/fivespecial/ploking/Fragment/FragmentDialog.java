@@ -6,14 +6,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +32,11 @@ import com.fivespecial.ploking.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 
 public class FragmentDialog extends DialogFragment implements View.OnClickListener {
 
@@ -36,6 +45,7 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
     ImageView delete_btn,share_btn;
     String path = "";
     String file_name = "";
+    Double longitude, latitude;
     private Fragment fragment;
 
 
@@ -68,10 +78,34 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
         String value= args.getString("key");
         path=args.getString("path");
         file_name=args.getString("name");
-
+        longitude=args.getDouble("longitude");
+        latitude=args.getDouble("latitude");
         dialog_img = (ImageView) view.findViewById(R.id.dailog_img);
         delete_btn=(ImageView) view.findViewById(R.id.dailog_delete);
         share_btn=(ImageView)view.findViewById(R.id.dialog_share);
+
+        String cityName = null;
+        Geocoder gcd = new Geocoder(getActivity().getBaseContext(), Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = gcd.getFromLocation(latitude,
+                    longitude, 1);
+            Log.d("w", String.valueOf(latitude) + String.valueOf(longitude));
+            if (addresses.size() == 0)
+                throw new IOException();
+            cityName = addresses.get(0).getLocality();
+        } catch (IOException e) {
+            cityName = "알 수 없는 도시";
+            e.printStackTrace();
+        }
+
+        TextView txt = (TextView)view.findViewById(R.id.dialog_time);
+        Log.d("w", file_name.split(".", 1)[0]);
+        long timel = Long.parseLong(file_name.split(".jpg")[0]);
+        String pattern = "yyyy. MM. dd HH:mm";
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        String date = (String) formatter.format(new Timestamp(timel));
+        txt.setText(date + '\n' + cityName);
 
         f = new File(path, file_name);
         Bitmap b = null;

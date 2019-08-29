@@ -3,16 +3,21 @@ package com.fivespecial.ploking.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -38,6 +43,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import static android.content.Context.LOCATION_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class CameraFragment extends Fragment implements TextureView.SurfaceTextureListener, View.OnClickListener {
     TextureView textureView;
@@ -50,6 +58,10 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
     AlbumFragment albumFragment;
     String path;
     String FILE_NAME;
+
+    double lastLon = 0;
+    double lastLat = 0;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
 
     SoundPool pool;
     int ddok;
@@ -136,7 +148,7 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
                     Bitmap bmp = BitmapFactory.decodeByteArray(data,0,data.length);
 
                     ContextWrapper cw= new ContextWrapper(getContext().getApplicationContext());
-                    File dir= cw.getDir("imageDir", Context.MODE_PRIVATE);
+                    File dir= cw.getDir("imageDir", MODE_PRIVATE);
                     if(!dir.exists()) {
                         dir.mkdir();
                     }
@@ -167,6 +179,11 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
                     }
                     path =dir.getAbsolutePath();
 
+                    SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+
+                    double longitude = Double.longBitsToDouble(pref.getLong("lon", Double.doubleToLongBits(0)));
+                    double latitude = Double.longBitsToDouble(pref.getLong("lat", Double.doubleToLongBits(0)));
+
                     try{
                         File f= new File(path,FILE_NAME);
                         Bitmap b= BitmapFactory.decodeStream(new FileInputStream(f));
@@ -178,7 +195,7 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
                     catch (Exception e){
                         e.printStackTrace();
                     }
-                    dbHelper.insertData(path,FILE_NAME);
+                    dbHelper.insertData(path, FILE_NAME, longitude, latitude);
                     ((TabbedActivity)getActivity()).refresh();
                     camera.startPreview();
 
@@ -204,5 +221,6 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
 
         }
     }
+
 }
 
