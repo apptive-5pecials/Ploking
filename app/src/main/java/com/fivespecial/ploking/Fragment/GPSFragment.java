@@ -10,11 +10,15 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.fivespecial.ploking.Maps.BinLocation;
+import com.fivespecial.ploking.Maps.Calculation;
 import com.fivespecial.ploking.Maps.DataAdapter;
 import com.fivespecial.ploking.R;
 import com.naver.maps.geometry.LatLng;
@@ -45,6 +50,10 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class GPSFragment extends Fragment {
 
+    //TAG
+    protected static final String TAG = "GPSFragment";
+
+
     //custom-info-window
     private static class InfoWindowAdapter extends InfoWindow.DefaultTextAdapter {
         private InfoWindowAdapter(@NonNull Context context) {
@@ -64,6 +73,7 @@ public class GPSFragment extends Fragment {
     }
 
     //garbage bins
+    Calculation calculation;
     public List<BinLocation> binLocationList;
     BinLocation binLocation;
 
@@ -79,7 +89,7 @@ public class GPSFragment extends Fragment {
     double distance_sum = 0;
 
     //timer
-    private Button startBtn, stopBtn, pauseBtn;
+    private ImageButton startBtn, stopBtn, pauseBtn;
     private Boolean isRunning = false;
     private Boolean tButtonclicked = false;
     Thread timeThread;
@@ -106,6 +116,8 @@ public class GPSFragment extends Fragment {
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
+
+
         NaverMapSdk.getInstance(getActivity()).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient("0fwsvimx0a"));
 
@@ -125,6 +137,8 @@ public class GPSFragment extends Fragment {
         //test
         mapFragment.getMapAsync(this::onMapReady);
 
+
+        calculation = new Calculation();
     }
 
     @Nullable
@@ -138,17 +152,28 @@ public class GPSFragment extends Fragment {
         startBtn = view.findViewById(R.id.btn_fragment_four_start);
         stopBtn = view.findViewById(R.id.btn_fragment_four_stop);
         pauseBtn = view.findViewById(R.id.btn_fragment_four_pause);
+        View runLayout = view.findViewById(R.id.layout_running);
+        View informLayout = view.findViewById(R.id.layout_inform);
+
+        //animation
+        Animation pauseAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.pausebtn_appear);
+        Animation stopAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.stopbtn_appear);
 
         txtDistance = (TextView) view.findViewById(R.id.tv_fragment_four_distance);
         txtTime = (TextView) view.findViewById(R.id.tv_fragment_four_time);
         txtKcal = (TextView) view.findViewById(R.id.tv_fragment_four_calorie);
 
+
+
         startBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 v.setVisibility(View.GONE);
-                pauseBtn.setVisibility(View.VISIBLE);
-                stopBtn.setVisibility(View.VISIBLE);
+                runLayout.setVisibility(View.VISIBLE);
+                informLayout.setVisibility(View.VISIBLE);
+
+                pauseBtn.startAnimation(pauseAppear);
+                stopBtn.startAnimation(stopAppear);
 
                 isRunning = true;
                 timeThread = new Thread(new timeThread());
@@ -161,13 +186,14 @@ public class GPSFragment extends Fragment {
             @Override
             public void onClick(View v){
                 startBtn.setVisibility(View.VISIBLE);
-                pauseBtn.setVisibility(View.GONE);
-                v.setVisibility(View.GONE);
+                runLayout.setVisibility(View.GONE);
+                informLayout.setVisibility(View.GONE);
+
                 isRunning = false;
                 timeThread.interrupt();
-                txtTime.setText("00:00");
+//                txtTime.setText("00:00");
                 distance_sum = 0;
-                txtDistance.setText("0.0 m");
+//                txtDistance.setText("0.0 m");
             }
         });
 
@@ -176,10 +202,10 @@ public class GPSFragment extends Fragment {
             public void onClick(View v){
                 isRunning = !isRunning;
                 if(isRunning){
-                    pauseBtn.setText("일시정지");
+                    pauseBtn.setImageResource(R.drawable.pause_button);
                 }else{
                     tButtonclicked = true;
-                    pauseBtn.setText("시작");
+                    pauseBtn.setImageResource(R.drawable.start_button);
                 }
             }
         });
@@ -291,9 +317,9 @@ public class GPSFragment extends Fragment {
             //처음 생성된 위치 오버레이는 카메라의 초기 좌표에 위치해 있다.
         }
         catch(SecurityException | NullPointerException e){
+            Log.v(TAG, "CANNOT be find GPS signal.");
             longitude = 129.04378;
             latitude = 35.237396;
-            //권한이 없으면 oncreate시 내 위치 찾는 것을 못한다.
         }
         locationOverlay.setPosition(new LatLng(latitude, longitude));
 
@@ -319,22 +345,27 @@ public class GPSFragment extends Fragment {
 
         @Override
         public void onLocationChanged(Location location) {
+            int count = 0;
 
-            if(isRunning){
-                try{
-                    //start location manager
-                    LocationManager lm =(LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            try{
+                //start location manager
+                LocationManager lm =(LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
 
-                    //Request new location
-                    lm.requestLocationUpdates(lm.GPS_PROVIDER, 0,0, Loclist);
+                //Request new location
+                lm.requestLocationUpdates(lm.GPS_PROVIDER, 0,0, Loclist);
 
-                    //Get new location
-                    Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+                //Get new location
+                Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
 
-                    //get the current lat and long
-                    currentLat = loc.getLatitude();
-                    currentLon = loc.getLongitude();
+                //get the current lat and long
+                currentLat = loc.getLatitude();
+                currentLon = loc.getLongitude();
 
+                count = calculation.NearBins(binLocationList, currentLat, currentLon);
+
+                Log.d(TAG, "count = " + count);
+
+                if(isRunning){
                     if(tButtonclicked){
                         lastLat = currentLat;
                         lastLon = currentLon;
@@ -350,8 +381,8 @@ public class GPSFragment extends Fragment {
                     locationB.setLongitude(currentLon);
 
                     double distanceMeters = locationA.distanceTo(locationB);
-                    Log.v("lastLocation", String.format("%f", lastLon));
-                    Log.v("currentLocation", String.format("%f", currentLon));
+                    Log.v(TAG, String.format("%f", lastLon));
+                    Log.v(TAG, String.format("%f", currentLon));
 
                     distance_sum += distanceMeters;
 
@@ -360,10 +391,9 @@ public class GPSFragment extends Fragment {
 
                     txtDistance.setText(String.format("%.1f m",distance_sum ));
                 }
-                catch(SecurityException e){
-                }
             }
-
+            catch(SecurityException | NullPointerException e){
+            }
         }
 
         @Override
