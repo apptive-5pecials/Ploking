@@ -35,7 +35,7 @@
                 android:textColor="#000"
                 android:textSize="18sp"
                 android:fontFamily="@font/noto_light"
-                android:text="오늘 박철수님은\n420kcal를 소비했습니다."
+                android:text="백선욱 님은 총\n420kcal를 소비했습니다."
                 />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_gravity="center_vertical|right"
                 android:fontFamily="@font/noto_light"
                 android:textColor="#fff"
-                android:text="오늘 걸음수\n7,533\n6.7km"/>
+                android:text="총 활동량 \n 0.0 km"/>
     </FrameLayout>
 
     <LinearLayout

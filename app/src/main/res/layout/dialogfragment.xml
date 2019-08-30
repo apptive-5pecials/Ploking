@@ -18,25 +18,20 @@
         <FrameLayout
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="47.6dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:background="@drawable/greenbox"
             >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="47.6dp"
-                android:src="@drawable/greenbox"
-                />
-
             <TextView
                 android:id="@+id/dialog_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="#fff"
                 android:gravity="center_vertical|right"
                 android:fontFamily="@font/noto_regular"
-                android:text="란란루"
+                android:text="2019.9.11 09:11 \n충북 청주시"
                 />
 
         </FrameLayout>
