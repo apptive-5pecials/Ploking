@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00ffffff"
+    >
+    <LinearLayout
+        android:background="#00ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/greenbox"
+        android:weightSum="2">
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@drawable/greenbox"
+            >
+            <TextView
+                android:id="@+id/dialog_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="#fff"
+                android:gravity="center_vertical|right"
+                android:fontFamily="@font/noto_regular"
+                android:text="2019.9.11 09:11 \n충북 청주시"
+                />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:layout_below="@+id/greenbox"
+
+        android:scaleType="fitXY"
+        android:id="@+id/dailog_img"
+        android:layout_width="match_parent"
+        android:layout_height="352dp"/>
+
+    <FrameLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/dailog_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/dailog_delete"
+            android:layout_marginLeft="9.9dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:layout_gravity="left|top"
+            android:src="@drawable/delete_button"/>
+        <ImageView
+            android:id="@+id/dialog_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:src="@drawable/share_button"/>
+    </FrameLayout>
+
+</RelativeLayout>

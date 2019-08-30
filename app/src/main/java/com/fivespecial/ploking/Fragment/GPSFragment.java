@@ -3,6 +3,7 @@ package com.fivespecial.ploking.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -76,6 +77,9 @@ public class GPSFragment extends Fragment {
     Calculation calculation;
     public List<BinLocation> binLocationList;
     BinLocation binLocation;
+    TextView txtNearBin;
+    int binCount;
+
 
     //txtTimer
     TextView txtDistance;
@@ -86,7 +90,7 @@ public class GPSFragment extends Fragment {
     double currentLat=0;
     double lastLon = 0;
     double lastLat = 0;
-    double distance_sum = 0;
+    float distance_sum = 0;
 
     //timer
     private ImageButton startBtn, stopBtn, pauseBtn;
@@ -97,8 +101,10 @@ public class GPSFragment extends Fragment {
 
     //kcal
     int weight = 70;
-    final double coef = 0.001; // 1초당 운동계수
-    double calory = 0;
+    private float coef = 0.001f; // 1초당 운동계수
+    float calorie = 0;
+
+
 
     private FusedLocationSource locationSource;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
@@ -116,29 +122,12 @@ public class GPSFragment extends Fragment {
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-
-
-        NaverMapSdk.getInstance(getActivity()).setClient(
-                new NaverMapSdk.NaverCloudPlatformClient("0fwsvimx0a"));
+        binCount = 0;
 
         //API를 호출해 클라이언트 ID를 지정
         NaverMapSdk.getInstance(getActivity()).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient("0fwsvimx0a"));
 
-        FragmentManager fm = getFragmentManager();
-        mapFragment = (MapFragment)this.getChildFragmentManager().
-                findFragmentById(R.id.map);
-        if(mapFragment == null){
-            mapFragment = MapFragment.newInstance();
-            fm.beginTransaction().add(R.id.fragmentBorc, mapFragment).commit();
-        }
-
-        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-        //test
-        mapFragment.getMapAsync(this::onMapReady);
-
-
-        calculation = new Calculation();
     }
 
     @Nullable
@@ -147,6 +136,10 @@ public class GPSFragment extends Fragment {
 
         View view;
         view = inflater.inflate(R.layout.fragment_gps, null);
+
+
+
+        calculation = new Calculation();
 
         //define views...
         startBtn = view.findViewById(R.id.btn_fragment_four_start);
@@ -159,54 +152,74 @@ public class GPSFragment extends Fragment {
         Animation pauseAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.pausebtn_appear);
         Animation stopAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.stopbtn_appear);
 
+        txtNearBin = view.findViewById(R.id.tv_near_bin_notice);
         txtDistance = (TextView) view.findViewById(R.id.tv_fragment_four_distance);
         txtTime = (TextView) view.findViewById(R.id.tv_fragment_four_time);
         txtKcal = (TextView) view.findViewById(R.id.tv_fragment_four_calorie);
 
+        //naverMapfragment start
+        FragmentManager fm = getFragmentManager();
+        mapFragment = (MapFragment)this
+                .getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        if(mapFragment == null){
+            mapFragment = MapFragment.newInstance();
+            fm.beginTransaction().add(R.id.fragmentBorc, mapFragment).commit();
+        }
 
+        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+        //test
+        mapFragment.getMapAsync(this::onMapReady);
 
-        startBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                v.setVisibility(View.GONE);
-                runLayout.setVisibility(View.VISIBLE);
-                informLayout.setVisibility(View.VISIBLE);
+        startBtn.setOnClickListener((View v) -> {
+            v.setVisibility(View.GONE);
+            runLayout.setVisibility(View.VISIBLE);
+            informLayout.setVisibility(View.VISIBLE);
 
-                pauseBtn.startAnimation(pauseAppear);
-                stopBtn.startAnimation(stopAppear);
+            pauseBtn.startAnimation(pauseAppear);
+            stopBtn.startAnimation(stopAppear);
 
-                isRunning = true;
-                timeThread = new Thread(new timeThread());
-                timeThread.start();
-                tButtonclicked = true;
-            }
+            isRunning = true;
+            timeThread = new Thread(new timeThread());
+            timeThread.start();
+            tButtonclicked = true;
         });
 
-        stopBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                startBtn.setVisibility(View.VISIBLE);
-                runLayout.setVisibility(View.GONE);
-                informLayout.setVisibility(View.GONE);
+        stopBtn.setOnClickListener((View v) ->{
+            startBtn.setVisibility(View.VISIBLE);
+            runLayout.setVisibility(View.GONE);
+            informLayout.setVisibility(View.GONE);
 
-                isRunning = false;
-                timeThread.interrupt();
+            SharedPreferences sFile = getActivity().getSharedPreferences("sFile", Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sFile.edit();
+
+            Float updateDistance = sFile.getFloat("distance", 0);
+            Float updateKcal = sFile.getFloat("Kcal", 0);
+
+            updateDistance += distance_sum;
+            updateKcal += calorie;
+
+            editor.putFloat("distance", updateDistance);
+            editor.putFloat("Kcal", updateKcal);
+
+            editor.commit();
+            editor.commit();
+
+            isRunning = false;
+            timeThread.interrupt();
 //                txtTime.setText("00:00");
-                distance_sum = 0;
+            distance_sum = 0;
 //                txtDistance.setText("0.0 m");
-            }
         });
 
-        pauseBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                isRunning = !isRunning;
-                if(isRunning){
-                    pauseBtn.setImageResource(R.drawable.pause_button);
-                }else{
-                    tButtonclicked = true;
-                    pauseBtn.setImageResource(R.drawable.start_button);
-                }
+        pauseBtn.setOnClickListener((View v) -> {
+            isRunning = !isRunning;
+            if(isRunning){
+                pauseBtn.setImageResource(R.drawable.pause_button);
+            }else{
+                tButtonclicked = true;
+                pauseBtn.setImageResource(R.drawable.start_button);
             }
         });
 
@@ -221,8 +234,6 @@ public class GPSFragment extends Fragment {
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
         }
-
-
 
         LocationManager lm =(LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         lm.requestLocationUpdates(lm.GPS_PROVIDER, 0,0, Loclist);
@@ -262,6 +273,8 @@ public class GPSFragment extends Fragment {
         double longitude, latitude;
         double dLat, dLong;
         final InfoWindow binsInfo = new InfoWindow();
+
+
 
         final LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         Location location;
@@ -321,6 +334,8 @@ public class GPSFragment extends Fragment {
             longitude = 129.04378;
             latitude = 35.237396;
         }
+        binCount = calculation.NearBins(binLocationList, latitude, longitude);
+        txtNearBin.setText(getString(R.string.near_bin_notice, binCount));
         locationOverlay.setPosition(new LatLng(latitude, longitude));
 
         Marker marker = new Marker();
@@ -345,7 +360,8 @@ public class GPSFragment extends Fragment {
 
         @Override
         public void onLocationChanged(Location location) {
-            int count = 0;
+
+            int binCount = 0;
 
             try{
                 //start location manager
@@ -361,9 +377,10 @@ public class GPSFragment extends Fragment {
                 currentLat = loc.getLatitude();
                 currentLon = loc.getLongitude();
 
-                count = calculation.NearBins(binLocationList, currentLat, currentLon);
+                binCount = calculation.NearBins(binLocationList, currentLat, currentLon);
 
-                Log.d(TAG, "count = " + count);
+                txtNearBin.setText(getString(R.string.near_bin_notice, binCount));
+
 
                 if(isRunning){
                     if(tButtonclicked){
@@ -380,7 +397,7 @@ public class GPSFragment extends Fragment {
                     locationB.setLatitude(currentLat);
                     locationB.setLongitude(currentLon);
 
-                    double distanceMeters = locationA.distanceTo(locationB);
+                    float distanceMeters = locationA.distanceTo(locationB);
                     Log.v(TAG, String.format("%f", lastLon));
                     Log.v(TAG, String.format("%f", currentLon));
 
@@ -424,10 +441,10 @@ public class GPSFragment extends Fragment {
             //1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
 
             //소모 칼로리
-            calory = weight * coef * sec_sum;
+            calorie = weight * coef * sec_sum;
 
             @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", min, sec);
-            @SuppressLint("DefaultLocale") String kcalResult = String.format("%.0f", calory) + " kcal";
+            @SuppressLint("DefaultLocale") String kcalResult = String.format("%.0f", calorie) + " kcal";
 
             txtTime.setText(result);
             txtKcal.setText(kcalResult);
@@ -477,6 +494,4 @@ public class GPSFragment extends Fragment {
         //db 닫기;
         mDBHelper.close();
     }
-
-
 }

@@ -33,11 +33,35 @@
             android:layout_height="match_parent"
             android:id="@+id/fragmentBorc"/>
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_near_bin_box"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:id="@+id/tv_near_bin_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/near_bin_notice"
+                android:textSize="10dp"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="2.6dp"
+                android:layout_marginTop="2.6dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"/>
+
+        </FrameLayout>
+
         <LinearLayout
             android:id="@+id/layout_inform"
             android:layout_width="303.7dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded"
+            android:background="@drawable/whiterounded"
             android:orientation="horizontal"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
