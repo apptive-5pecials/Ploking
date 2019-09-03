@@ -15,4 +15,22 @@
 
     <string name="format_info_window_on_marker">쓰레기통 정보: %s</string>
     <string name="format_info_window_on_map">좌표: (%1$.5f, %2$.5f)</string>
+
+    <string name="dash">-</string>
+    <string name="viewGithub">View on GitHub</string>
+    <string name="actionToggleValues">Toggle Values</string>
+    <string name="actionToggleIcons">Toggle Icons</string>
+    <string name="actionToggleFilled">Toggle Filled</string>
+    <string name="actionToggleCircles">Toggle Circles</string>
+    <string name="actionToggleCubic">Toggle Cubic</string>
+    <string name="actionToggleStepped">Toggle Stepped</string>
+    <string name="actionToggleHorizontalCubic">Toggle Horizontal Cubic</string>
+    <string name="actionTogglePinch">Toggle PinchZoom</string>
+    <string name="actionToggleAutoScale">Toggle Auto Scale</string>
+    <string name="actionToggleHighlight">Toggle Highlight</string>
+    <string name="animateX">Animate X</string>
+    <string name="animateY">Animate Y</string>
+    <string name="animateXY">Animate XY</string>
+    <string name="actionSave">Save to Gallery</string>
+
 </resources>
