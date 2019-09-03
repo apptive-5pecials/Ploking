@@ -111,7 +111,7 @@ public class LineChartFragment extends DemoBase implements SeekBar.OnSeekBarChan
             xAxis = chart.getXAxis();
 
             // vertical grid lines
-            xAxis.enableGridDashedLine(10f, 10f, 0f);
+
         }
 
         YAxis yAxis;
@@ -122,7 +122,7 @@ public class LineChartFragment extends DemoBase implements SeekBar.OnSeekBarChan
             chart.getAxisRight().setEnabled(false);
 
             // horizontal grid lines
-            yAxis.enableGridDashedLine(10f, 10f, 0f);
+
 
             // axis range
             yAxis.setAxisMaximum(200f);
@@ -202,7 +202,7 @@ public class LineChartFragment extends DemoBase implements SeekBar.OnSeekBarChan
             set1.setDrawIcons(false);
 
             // draw dashed line
-            set1.enableDashedLine(10f, 5f, 0f);
+
 
             // black lines and points
             set1.setColor(Color.GREEN);
