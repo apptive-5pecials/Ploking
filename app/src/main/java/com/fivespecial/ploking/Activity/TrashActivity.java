@@ -3,6 +3,7 @@ package com.fivespecial.ploking.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -10,6 +11,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -28,49 +30,47 @@ import static android.nfc.NdefRecord.createMime;
 
 public class TrashActivity extends AppCompatActivity{
 
-    NfcAdapter mNfcAdapter;
-    TextView textView;
-    PendingIntent mPendingIntent;
-
-    public static final int TYPE_TEXT = 1;
-    public static final int TYPE_URI = 2;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trash);
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        mPendingIntent = PendingIntent.getActivity(this,0,intent,0);
+        //CheckTypesTask task = new CheckTypesTask();
+        //task.execute();
     }
 
-    @Override
+    public class CheckTypesTask extends AsyncTask<Void, Void, Void> {
 
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (intent == null)
-            return;
+        ProgressDialog asyncDialog = new ProgressDialog(
+                TrashActivity.this);
 
-        Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-    }
+        @Override
+        protected void onPreExecute() {
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            asyncDialog.setMessage("로딩중입니다..");
 
-    private NdefMessage getTextAsNdef() {
-        byte[] textBytes = new byte[]{0, 1, 2, 3, 4};
-        NdefRecord textRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-                "text/plain".getBytes(), new byte[] {}, textBytes);
+            // show dialog
+            asyncDialog.show();
+            super.onPreExecute();
+        }
 
-        return new NdefMessage(new NdefRecord[] {textRecord});
-    }
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            try {
+                for (int i = 0; i < 5; i++) {
+                    //asyncDialog.setProgress(i * 30);
+                    Thread.sleep(500);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
-    private NdefMessage getUriAsNdef() {
-        byte[] textBytes = new byte[]{0, 1, 2, 3, 4};
-        NdefRecord record1 = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
-                new String("U").getBytes(Charset.forName("US-ASCII")), new byte[0], textBytes);
-        return null;
-    }
-
-    private void toast(String text) {
-        Log.i("fureun","toast");
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        @Override
+        protected void onPostExecute(Void result) {
+            asyncDialog.dismiss();
+            super.onPostExecute(result);
+        }
     }
 }
+
