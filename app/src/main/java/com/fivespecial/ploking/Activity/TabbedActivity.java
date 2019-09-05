@@ -3,7 +3,9 @@ package com.fivespecial.ploking.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,4 +77,6 @@ public class TabbedActivity extends AppCompatActivity {
         tab_icon.setImageResource(tabIcon);
         return tabView;
     }
+
+
 }

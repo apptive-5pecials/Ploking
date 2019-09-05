@@ -193,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                app:srcCompat="@drawable/pause_button" />
+                app:srcCompat="@drawable/pause_button"/>
 
             <ImageButton
                 android:id="@+id/btn_fragment_four_stop"
@@ -207,8 +207,6 @@
 
 
         </LinearLayout>
-
-
 
 
     </RelativeLayout>
