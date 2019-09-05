@@ -8,6 +8,7 @@ public class Calculation {
 
     BinLocation binLocation;
     double dLat, dLong;
+//    List<BinLocation> nearBin;
 
     public Calculation() {
     }
@@ -28,8 +29,14 @@ public class Calculation {
             locationA.setLatitude(dLat);
             locationA.setLongitude(dLong);
 
-            if(locationA.distanceTo(locationB) < 1000)count++;
+            if(locationA.distanceTo(locationB) < 1000){
+//                nearBin.add(binLocation);
+                count++;
+            }
         }
             return count;
     }
+
+
+
 }

@@ -49,6 +49,7 @@ dependencies {
     //FusedLocationSource
     implementation 'com.naver.maps:map-sdk:3.5.0'
 
+    implementation group: 'com.google.guava', name: 'guava', version: '11.0.2'
 }
 
 task sourcesJar(type: Jar) {
