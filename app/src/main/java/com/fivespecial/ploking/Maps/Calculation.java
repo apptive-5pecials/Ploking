@@ -1,5 +1,4 @@
-package com.fivespecial.ploking.Maps;
-
+package com.fivespecial.ploking.maps;
 import android.location.Location;
 
 import java.util.List;
@@ -22,8 +21,11 @@ public class Calculation {
 
         for(int i = 0; i < binLocationList.size(); i++) {
             binLocation = binLocationList.get(i);
-            dLat = Double.parseDouble(binLocation.latitude);
-            dLong = Double.parseDouble(binLocation.longitude);
+
+            if(binLocation.getLatitude() != null && binLocation.getLongitude() != null) {
+                dLat = binLocation.getLatitude();
+                dLong = binLocation.getLongitude();
+            }
 
             Location locationA = new Location("point A");
             locationA.setLatitude(dLat);

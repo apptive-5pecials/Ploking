@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Maps;
+package com.fivespecial.ploking.maps;
 
 import android.content.Context;
 import android.database.SQLException;

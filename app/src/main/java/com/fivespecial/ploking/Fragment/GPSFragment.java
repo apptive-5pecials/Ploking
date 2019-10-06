@@ -11,14 +11,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -29,9 +27,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.fivespecial.ploking.Maps.BinLocation;
-import com.fivespecial.ploking.Maps.Calculation;
-import com.fivespecial.ploking.Maps.DataAdapter;
+import com.fivespecial.ploking.maps.BinLocation;
+import com.fivespecial.ploking.maps.Calculation;
+import com.fivespecial.ploking.maps.DataAdapter;
 import com.fivespecial.ploking.R;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
@@ -194,8 +192,8 @@ public class GPSFragment extends Fragment {
 
             SharedPreferences.Editor editor = sFile.edit();
 
-            Float updateDistance = sFile.getFloat("distance", 0);
-            Float updateKcal = sFile.getFloat("Kcal", 0);
+            float updateDistance = sFile.getFloat("distance", 0);
+            float updateKcal = sFile.getFloat("Kcal", 0);
 
             updateDistance += distance_sum;
             updateKcal += calorie;
@@ -203,8 +201,7 @@ public class GPSFragment extends Fragment {
             editor.putFloat("distance", updateDistance);
             editor.putFloat("Kcal", updateKcal);
 
-            editor.commit();
-            editor.commit();
+            editor.apply();
 
             isRunning = false;
             timeThread.interrupt();
@@ -224,33 +221,39 @@ public class GPSFragment extends Fragment {
         });
 
         //GPS start...
-        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);   //test
+        try {
 
-        if(permissionCheck == PackageManager.PERMISSION_DENIED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)){}  //test
-            else{
-                ActivityCompat.requestPermissions(getActivity(),                                    //test
-                        new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
-                        LOCATION_PERMISSION_REQUEST_CODE);
+            int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);   //test
+
+            if(permissionCheck == PackageManager.PERMISSION_DENIED){
+                if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)){}  //test
+                else{
+                    ActivityCompat.requestPermissions(getActivity(),                                    //test
+                            new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                            LOCATION_PERMISSION_REQUEST_CODE);
+                }
             }
-        }
 
-        LocationManager lm =(LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        lm.requestLocationUpdates(lm.GPS_PROVIDER, 0,0, Loclist);
-        Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+            LocationManager lm =(LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            lm.requestLocationUpdates(lm.GPS_PROVIDER, 0,0, Loclist);
+            Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
 
-        if(loc==null){
-            txtDistance.setText("No GPS location found");
+            if(loc==null){
+                txtDistance.setText("No GPS location found");
+            }
+            else{
+                //set Current latitude and longitude
+                currentLon=loc.getLongitude();
+                currentLat=loc.getLatitude();
+            }
+            //Set the last latitude and longitude
+            lastLat=currentLat;
+            lastLon=currentLon;
+            //GPS end...
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        else{
-            //set Current latitude and longitude
-            currentLon=loc.getLongitude();
-            currentLat=loc.getLatitude();
-        }
-        //Set the last latitude and longitude
-        lastLat=currentLat;
-        lastLon=currentLon;
-        //GPS end...
 
 
         return view;
@@ -297,8 +300,14 @@ public class GPSFragment extends Fragment {
         for(int i = 0; i < binLocationList.size(); i++){
             binLocation = binLocationList.get(i);
 
-            dLat = Double.parseDouble(binLocation.latitude);
-            dLong = Double.parseDouble(binLocation.longitude);
+
+            if(binLocation.getLatitude() != null && binLocation.getLongitude() != null) {
+                dLat = binLocation.getLatitude();
+                dLong = binLocation.getLongitude();
+            } else {
+                dLat = 0.0;
+                dLong = 0.0;
+            }
 
 //            final InfoWindow binsInfo = new InfoWindow();
 //            binsInfo.setPosition(new LatLng(dLat, dLong));
@@ -410,6 +419,7 @@ public class GPSFragment extends Fragment {
                 }
             }
             catch(SecurityException | NullPointerException e){
+                e.printStackTrace();
             }
         }
 
@@ -432,7 +442,7 @@ public class GPSFragment extends Fragment {
     };
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             int sec_sum = msg.arg1;
