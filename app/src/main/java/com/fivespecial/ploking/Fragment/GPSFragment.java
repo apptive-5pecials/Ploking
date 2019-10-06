@@ -343,7 +343,7 @@ public class GPSFragment extends Fragment {
             longitude = 129.04378;
             latitude = 35.237396;
         }
-        binCount = calculation.NearBins(binLocationList, latitude, longitude);
+        binCount = calculation.nearBins(binLocationList, latitude, longitude);
         txtNearBin.setText(getString(R.string.near_bin_notice, binCount));
         locationOverlay.setPosition(new LatLng(latitude, longitude));
 
@@ -386,7 +386,7 @@ public class GPSFragment extends Fragment {
                 currentLat = loc.getLatitude();
                 currentLon = loc.getLongitude();
 
-                binCount = calculation.NearBins(binLocationList, currentLat, currentLon);
+                binCount = calculation.nearBins(binLocationList, currentLat, currentLon);
 
                 txtNearBin.setText(getString(R.string.near_bin_notice, binCount));
 
