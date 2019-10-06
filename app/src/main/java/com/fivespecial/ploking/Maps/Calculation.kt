@@ -4,6 +4,10 @@ import android.location.Location
 
 class Calculation {
 
+    companion object {
+        const val MINIMUM_DISTANCE_DIFFERENCE: Int = 1000
+    }
+
     //private val nearBin = ArrayList<BinLocation>()
 
     fun nearBins(binLocationList: List<BinLocation>, currentLat: Double, currentLong: Double): Int {
@@ -26,7 +30,7 @@ class Calculation {
                     longitude = currentLong
                 }
 
-                if(locationA.distanceTo(locationB) < 1000) {
+                if(locationA.distanceTo(locationB) < MINIMUM_DISTANCE_DIFFERENCE) {
                     // nearBin.add(bin)
 
                     count++
