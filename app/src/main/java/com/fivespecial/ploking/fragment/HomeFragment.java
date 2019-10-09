@@ -1,103 +1,69 @@
 package com.fivespecial.ploking.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.fivespecial.ploking.activity.TrashActivity;
 import com.fivespecial.ploking.R;
+import com.fivespecial.ploking.activity.TrashActivity;
+import com.fivespecial.ploking.async.CheckTypesTask;
+import com.fivespecial.ploking.base.BaseFragment;
 
-public class HomeFragment extends Fragment {
+import org.jetbrains.annotations.NotNull;
 
-    public HomeFragment() {
-
-    }
+public class HomeFragment extends BaseFragment {
 
     public static HomeFragment newInstance(){
         return new HomeFragment();
     }
 
+    private TextView tvDistance;
+    private TextView tvKcal;
+    private ImageView trashButton;
+
     @Override
-    public void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
+    public int getResourceId() {
+        return R.layout.fragment_home;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view;
-        view = inflater.inflate(R.layout.fragment_home, null);
+    public void initComponent(@NotNull View view) {
+        tvDistance = view.findViewById(R.id.home_steps);
+        tvKcal = view.findViewById(R.id.home_kcals);
+        trashButton = view.findViewById(R.id.button_trash);
+    }
 
-        TextView tvDistance = view.findViewById(R.id.home_steps);
-        TextView tvKcal = view.findViewById(R.id.home_kcals);
+    @Override
+    public void setupListeners(@NotNull View view) {
 
-        SharedPreferences sFile = getActivity().getSharedPreferences("sFile", Context.MODE_PRIVATE);
+        trashButton.setOnClickListener(v -> {
 
-        Float ftDistance = sFile.getFloat("distance", 0);
-        Float ftKcal = sFile.getFloat("Kcal", 0);
-
-        ftDistance /= 1000; // meter to kilometer
-        Log.d("homeFragment", ftDistance.toString());
-
-        tvDistance.setText("총 활동량 \n" + String.format("%.1f", ftDistance) + " km");
-        tvKcal.setText("백선욱 님은 총\n"+ String.format("%.0f", ftKcal) + "kcal를 소비했습니다.");
-
-        view.findViewById(R.id.button_trash).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckTypesTask task = new CheckTypesTask();
+            if(getActivity() != null) {
+                CheckTypesTask task = new CheckTypesTask(getActivity());
                 task.execute();
-                Intent intent = new Intent(getActivity(), TrashActivity.class);
-                startActivity(intent);
             }
+
+            Intent intent = new Intent(getActivity(), TrashActivity.class);
+            startActivity(intent);
         });
-        return view;
     }
 
-    public class CheckTypesTask extends AsyncTask<Void, Void, Void> {
+    @Override
+    public void setupImplementation() {
 
-        ProgressDialog asyncDialog = new ProgressDialog(
-                getActivity());
+        if (getActivity().getApplicationContext() != null) {
+            SharedPreferences sFile = getActivity().getApplicationContext().getSharedPreferences("sFile", Context.MODE_PRIVATE);
 
-        @Override
-        protected void onPreExecute() {
-            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            asyncDialog.setMessage("로딩중입니다..");
+            float ftDistance = sFile.getFloat("distance", 0);
+            float ftKcal = sFile.getFloat("Kcal", 0);
 
-            // show dialog
-            asyncDialog.show();
-            super.onPreExecute();
-        }
+            ftDistance = ftDistance / 1000; // 미터->킬로미터
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            try {
-                for (int i = 0; i < 5; i++) {
-                    //asyncDialog.setProgress(i * 30);
-                    Thread.sleep(500);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            asyncDialog.dismiss();
-            super.onPostExecute(result);
+            tvDistance.setText("총 활동량 \n" + String.format("%.1f", ftDistance) + " km");
+            tvKcal.setText("백선욱 님은 총\n"+ String.format("%.0f", ftKcal) + "kcal를 소비했습니다.");
         }
     }
 }

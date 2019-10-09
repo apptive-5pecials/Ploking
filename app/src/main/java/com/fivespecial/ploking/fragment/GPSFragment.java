@@ -41,6 +41,8 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -111,6 +113,14 @@ public class GPSFragment extends BaseFragment {
     private Animation stopAppear;
 
     @Override
+    public void onCreate(Bundle saveInstanceState) {
+        super.onCreate(saveInstanceState);
+
+        initLoadDB(); // onMapReady 에서 DbHelper 에 접근했던 것을 onCreate 에서 하는것으로 변경
+
+    }
+
+    @Override
     public int getResourceId() {
         return R.layout.fragment_gps;
     }
@@ -138,29 +148,7 @@ public class GPSFragment extends BaseFragment {
     }
 
     @Override
-    public void setupImplementation() {
-        try {
-
-            //API를 호출해 클라이언트 ID를 지정
-            if(getActivity() != null) {
-                NaverMapSdk.getInstance(getActivity()).setClient(
-                        new NaverMapSdk.NaverCloudPlatformClient("0fwsvimx0a"));
-            }
-
-            // 초기 위치 설정
-            NaverMapOptions options = new NaverMapOptions()
-                    .camera(new CameraPosition(new LatLng(35.232286, 129.085166), 14));
-
-            MapFragment mapFragment = MapFragment.newInstance(options);
-            getFragmentManager().beginTransaction().add(R.id.fragmentBorc, mapFragment).commit();
-
-            //비동기로 NaverMap 객체를 가져옴. NaverMap 객체가 준비되면 callback 의 onMapReady(NaverMap) 호출됨.
-            mapFragment.getMapAsync(this::onMapReady);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, e + "에러 발생");
-        }
+    public void setupListeners(@NotNull View view) {
 
         // 시작버튼 클릭 리스너
         startButton.setOnClickListener((View v) -> {
@@ -215,6 +203,32 @@ public class GPSFragment extends BaseFragment {
                 pauseButton.setImageResource(R.drawable.start_button);
             }
         });
+    }
+
+    @Override
+    public void setupImplementation() {
+        try {
+
+            //API를 호출해 클라이언트 ID를 지정
+            if(getActivity() != null) {
+                NaverMapSdk.getInstance(getActivity()).setClient(
+                        new NaverMapSdk.NaverCloudPlatformClient("0fwsvimx0a"));
+            }
+
+            // 초기 위치 설정
+            NaverMapOptions options = new NaverMapOptions()
+                    .camera(new CameraPosition(new LatLng(35.232286, 129.085166), 14));
+
+            MapFragment mapFragment = MapFragment.newInstance(options);
+            getFragmentManager().beginTransaction().add(R.id.fragmentBorc, mapFragment).commit();
+
+            //비동기로 NaverMap 객체를 가져옴. NaverMap 객체가 준비되면 callback 의 onMapReady(NaverMap) 호출됨.
+            mapFragment.getMapAsync(this::onMapReady);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, e + "에러 발생");
+        }
 
         // GPS 시작..
         try {
@@ -253,14 +267,6 @@ public class GPSFragment extends BaseFragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
-
-        initLoadDB(); // onMapReady 에서 DbHelper 에 접근했던 것을 onCreate 에서 하는것으로 변경
-
     }
 
     @Override
@@ -350,7 +356,6 @@ public class GPSFragment extends BaseFragment {
         txtNearBin.setText(getString(R.string.near_bin_notice, binCount));
 
     }
-
 
     private LocationListener setLocationListener() {
 
