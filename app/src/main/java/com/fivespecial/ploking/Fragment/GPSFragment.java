@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.fivespecial.ploking.R;
+import com.fivespecial.ploking.base.BaseFragment;
 import com.fivespecial.ploking.maps.BinLocation;
 import com.fivespecial.ploking.maps.Calculation;
 import com.fivespecial.ploking.maps.DataAdapter;
@@ -48,18 +49,15 @@ import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class GPSFragment extends Fragment {
+public class GPSFragment extends BaseFragment {
 
-    private static final String TAG = "GPSFragment";
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
-
-    private static final double DEFAULT_CAMERA_LATITUDE = 35.232286;
-    private static final double DEFAULT_CAMERA_LONGITUDE = 129.085166;
-    private static final double DEFAULT_BIN_LATITUDE = 35.232286;
-    private static final double DEFAULT_BIN_LONGITUDE = 129.085166;
+    public static GPSFragment newInstance(){
+        return new GPSFragment();
+    }
 
     //custom-info-window
     private static class InfoWindowAdapter extends InfoWindow.DefaultTextAdapter {
+
         private InfoWindowAdapter(@NonNull Context context) {
             super(context);
         }
@@ -76,14 +74,21 @@ public class GPSFragment extends Fragment {
         }
     }
 
-    //garbage bins
+    private static final String TAG = "GPSFragment";
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
+
+    private static final double DEFAULT_CAMERA_LATITUDE = 35.232286;
+    private static final double DEFAULT_CAMERA_LONGITUDE = 129.085166;
+    private static final double DEFAULT_BIN_LATITUDE = 35.232286;
+    private static final double DEFAULT_BIN_LONGITUDE = 129.085166;
+
+    // Garbage Bins
     private Calculation calculation;
     private List<BinLocation> binLocationList;
     private TextView txtNearBin;
-    private int binCount;
+    private int binCount = 0;
 
-
-    //txtTimer
+    // TextTimer
     private TextView txtDistance;
     private TextView txtTime;
     private TextView txtKcal;
@@ -94,75 +99,66 @@ public class GPSFragment extends Fragment {
     private double lastLat = 0;
     private float distance_sum = 0;
 
-    //timer
+    // Timer
     private ImageButton startButton, stopButton, pauseButton;
     private Boolean isRunning = false;
     private Boolean tButtonclicked = false;
     private Thread timeThread;
 
+    // Calorie
     private float calorie = 0;
-
     private FusedLocationSource locationSource;
 
-    public static GPSFragment newInstance(){
-        return new GPSFragment();
+    private View runLayout;
+    private View informLayout;
+    private Animation pauseAppear;
+    private Animation stopAppear;
+
+    @Override
+    public int getResourceId() {
+        return R.layout.fragment_gps;
     }
 
     @Override
-    public void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
-
-        binCount = 0;
-
-        // onMapReady 에 있던것을 onCreate 에서 하는것으로 변경
-        initLoadDB();
-
-        //API를 호출해 클라이언트 ID를 지정
-        if(getActivity() != null) {
-            NaverMapSdk.getInstance(getActivity()).setClient(
-                    new NaverMapSdk.NaverCloudPlatformClient("0fwsvimx0a"));
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_gps, container, false);
+    public void initComponent(View view) {
 
         calculation = new Calculation();
+        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
 
         startButton = view.findViewById(R.id.btn_fragment_four_start);
         stopButton = view.findViewById(R.id.btn_fragment_four_stop);
         pauseButton = view.findViewById(R.id.btn_fragment_four_pause);
-        View runLayout = view.findViewById(R.id.layout_running);
-        View informLayout = view.findViewById(R.id.layout_inform);
+        runLayout = view.findViewById(R.id.layout_running);
+        informLayout = view.findViewById(R.id.layout_inform);
 
         //animation
-        Animation pauseAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.pausebtn_appear);
-        Animation stopAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.stopbtn_appear);
+        pauseAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.pausebtn_appear);
+        stopAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.stopbtn_appear);
 
         txtNearBin = view.findViewById(R.id.tv_near_bin_notice);
         txtDistance = view.findViewById(R.id.tv_fragment_four_distance);
         txtTime = view.findViewById(R.id.tv_fragment_four_time);
         txtKcal = view.findViewById(R.id.tv_fragment_four_calorie);
+    }
 
-        locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-
+    @Override
+    public void setupImplementation() {
         try {
 
-            // Naver MapFragment 초기화
-            MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            //API를 호출해 클라이언트 ID를 지정
+            if(getActivity() != null) {
+                NaverMapSdk.getInstance(getActivity()).setClient(
+                        new NaverMapSdk.NaverCloudPlatformClient("0fwsvimx0a"));
+            }
 
             // 초기 위치 설정
             NaverMapOptions options = new NaverMapOptions()
                     .camera(new CameraPosition(new LatLng(35.232286, 129.085166), 14));
 
-            mapFragment = MapFragment.newInstance(options);
+            MapFragment mapFragment = MapFragment.newInstance(options);
             getFragmentManager().beginTransaction().add(R.id.fragmentBorc, mapFragment).commit();
 
             //비동기로 NaverMap 객체를 가져옴. NaverMap 객체가 준비되면 callback 의 onMapReady(NaverMap) 호출됨.
-            assert mapFragment != null;
             mapFragment.getMapAsync(this::onMapReady);
 
         } catch (Exception e) {
@@ -227,15 +223,16 @@ public class GPSFragment extends Fragment {
         // GPS 시작..
         try {
 
-            int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);   //test
+            boolean permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED;
+            boolean permissionFineLocation = !ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
 
-            if(permissionCheck == PackageManager.PERMISSION_DENIED){
-                if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)){}  //test
-                else{
-                    ActivityCompat.requestPermissions(getActivity(),                                    //test
-                            new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
-                            LOCATION_PERMISSION_REQUEST_CODE);
-                }
+            if(permissionCheck && permissionFineLocation){
+                ActivityCompat.requestPermissions(
+                        getActivity(), // activity
+                        new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, // permissions
+                        LOCATION_PERMISSION_REQUEST_CODE // requestCode
+                );
+
             }
 
             LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
@@ -260,9 +257,14 @@ public class GPSFragment extends Fragment {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+        super.onCreate(saveInstanceState);
 
-        return view;
+        initLoadDB(); // onMapReady 에서 DbHelper 에 접근했던 것을 onCreate 에서 하는것으로 변경
+
     }
 
     @Override
