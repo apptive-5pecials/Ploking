@@ -1,10 +1,12 @@
-package com.fivespecial.ploking.Maps;
+package com.fivespecial.ploking.maps;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.fivespecial.ploking.maps.BinLocation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,8 +72,8 @@ public class DataAdapter {
                     binLocation = new BinLocation();
 
                     binLocation.setId(mCur.getString(0));
-                    binLocation.setLatitude(mCur.getString(1));
-                    binLocation.setLongitude(mCur.getString(2));
+                    binLocation.setLatitude(mCur.getDouble(1));
+                    binLocation.setLongitude(mCur.getDouble(2));
                     binLocation.setDescription(mCur.getString(3));
 
                     binList.add(binLocation);

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fivespecial.ploking.AdapterEtc.Adapter;
 import com.fivespecial.ploking.AdapterEtc.DbHelper;
 import com.fivespecial.ploking.AdapterEtc.ViewpagerAdapter;
-import com.fivespecial.ploking.MemberClass.Album;
+import com.fivespecial.ploking.model.Album;
 import com.fivespecial.ploking.R;
 
 import java.util.ArrayList;

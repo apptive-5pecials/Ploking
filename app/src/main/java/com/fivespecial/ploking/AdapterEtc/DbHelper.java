@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.fivespecial.ploking.MemberClass.Album;
+import com.fivespecial.ploking.model.Album;
 
 import java.util.ArrayList;
 import java.util.List;

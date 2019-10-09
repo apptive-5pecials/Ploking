@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.fivespecial.ploking.Fragment.AlbumFragment;
-import com.fivespecial.ploking.MemberClass.Album;
+import com.fivespecial.ploking.model.Album;
 import com.fivespecial.ploking.R;
 
 import java.io.File;
