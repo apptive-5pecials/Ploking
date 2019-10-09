@@ -1,5 +1,5 @@
 
-package com.fivespecial.ploking.AdapterEtc;
+package com.fivespecial.ploking.adapterEtc;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 

@@ -1,7 +1,6 @@
-package com.fivespecial.ploking.Fragment;
+package com.fivespecial.ploking.fragment;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,14 +9,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -31,9 +26,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.fivespecial.ploking.Activity.TabbedActivity;
-import com.fivespecial.ploking.AdapterEtc.CameraUtil;
-import com.fivespecial.ploking.AdapterEtc.DbHelper;
+import com.fivespecial.ploking.activity.TabbedActivity;
+import com.fivespecial.ploking.adapterEtc.CameraUtil;
+import com.fivespecial.ploking.adapterEtc.DbHelper;
 import com.fivespecial.ploking.R;
 
 import java.io.File;
@@ -43,7 +38,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static android.content.Context.LOCATION_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
 

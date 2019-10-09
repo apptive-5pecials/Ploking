@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Fragment;
+package com.fivespecial.ploking.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,7 +26,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import com.fivespecial.ploking.AdapterEtc.DbHelper;
+import com.fivespecial.ploking.adapterEtc.DbHelper;
 import com.fivespecial.ploking.R;
 
 import java.io.File;

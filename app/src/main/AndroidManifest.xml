@@ -20,7 +20,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".Activity.TrashActivity">
+        <activity android:name=".activity.TrashActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -30,11 +30,11 @@
                 <action android:name="android.nfc.action.TAG_DISCOVERED"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity" />
         <activity
-            android:name=".Activity.TabbedActivity"
+            android:name=".activity.TabbedActivity"
             android:theme="@style/TabTheme" />
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

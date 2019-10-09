@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Fragment;
+package com.fivespecial.ploking.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,8 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.fivespecial.ploking.Activity.TabbedActivity;
-import com.fivespecial.ploking.Activity.TrashActivity;
+import com.fivespecial.ploking.activity.TrashActivity;
 import com.fivespecial.ploking.R;
 
 public class HomeFragment extends Fragment {

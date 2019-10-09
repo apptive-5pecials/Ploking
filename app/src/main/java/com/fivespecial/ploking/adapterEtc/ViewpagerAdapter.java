@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.AdapterEtc;
+package com.fivespecial.ploking.adapterEtc;
 
 import android.view.ViewGroup;
 
@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.fivespecial.ploking.Fragment.*;
+import com.fivespecial.ploking.fragment.*;
 
 import java.util.HashMap;
 import java.util.Map;

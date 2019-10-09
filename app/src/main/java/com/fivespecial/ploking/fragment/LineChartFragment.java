@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Fragment;
+package com.fivespecial.ploking.fragment;
 
 import android.Manifest;
 import android.content.Intent;
@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import com.fivespecial.ploking.AdapterEtc.DemoBase;
+import com.fivespecial.ploking.adapterEtc.DemoBase;
 import com.fivespecial.ploking.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;

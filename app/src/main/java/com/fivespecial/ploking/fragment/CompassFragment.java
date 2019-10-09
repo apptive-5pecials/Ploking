@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Fragment;
+package com.fivespecial.ploking.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.fivespecial.ploking.AdapterEtc.Compass;
-import com.fivespecial.ploking.AdapterEtc.SOTWFormatter;
+import com.fivespecial.ploking.adapterEtc.Compass;
+import com.fivespecial.ploking.adapterEtc.SOTWFormatter;
 import com.fivespecial.ploking.R;
 
 public class CompassFragment extends Fragment {

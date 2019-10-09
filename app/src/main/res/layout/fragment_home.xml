@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/compass"
-                android:name="com.fivespecial.ploking.Fragment.CompassFragment"/>
+                android:name="com.fivespecial.ploking.fragment.CompassFragment"/>
 
         </LinearLayout>
         <LinearLayout

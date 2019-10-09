@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.AdapterEtc;
+package com.fivespecial.ploking.adapterEtc;
 
 import android.content.Context;
 import android.database.Cursor;

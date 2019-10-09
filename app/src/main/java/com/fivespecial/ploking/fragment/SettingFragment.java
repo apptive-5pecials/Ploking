@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Fragment;
+package com.fivespecial.ploking.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,21 +11,28 @@ import androidx.fragment.app.Fragment;
 
 import com.fivespecial.ploking.R;
 
-public class NaverMapFragment extends Fragment {
+public class SettingFragment extends Fragment {
 
-    public NaverMapFragment(){
+    public static SettingFragment newInstance(){
+        return new SettingFragment();
+    }
+
+    public SettingFragment() {
 
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.mapfragment, null, false);
+
+        View view;
+        view = inflater.inflate(R.layout.fragment_setting, null);
+
         return view;
     }
 }

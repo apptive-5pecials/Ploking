@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Activity;
+package com.fivespecial.ploking.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;

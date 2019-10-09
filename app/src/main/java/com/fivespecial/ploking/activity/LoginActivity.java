@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Activity;
+package com.fivespecial.ploking.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,20 +1,17 @@
-package com.fivespecial.ploking.Activity;
+package com.fivespecial.ploking.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fivespecial.ploking.AdapterEtc.Adapter;
-import com.fivespecial.ploking.AdapterEtc.DbHelper;
-import com.fivespecial.ploking.AdapterEtc.ViewpagerAdapter;
-import com.fivespecial.ploking.Fragment.AlbumFragment;
+import com.fivespecial.ploking.adapterEtc.Adapter;
+import com.fivespecial.ploking.adapterEtc.ViewpagerAdapter;
+import com.fivespecial.ploking.fragment.AlbumFragment;
 import com.fivespecial.ploking.R;
 import com.google.android.material.tabs.TabLayout;
 

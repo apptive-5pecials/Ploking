@@ -1,4 +1,4 @@
-package com.fivespecial.ploking.Fragment;
+package com.fivespecial.ploking.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fivespecial.ploking.AdapterEtc.Adapter;
-import com.fivespecial.ploking.AdapterEtc.DbHelper;
-import com.fivespecial.ploking.AdapterEtc.ViewpagerAdapter;
+import com.fivespecial.ploking.adapterEtc.Adapter;
+import com.fivespecial.ploking.adapterEtc.DbHelper;
+import com.fivespecial.ploking.adapterEtc.ViewpagerAdapter;
 import com.fivespecial.ploking.model.Album;
 import com.fivespecial.ploking.R;
 
