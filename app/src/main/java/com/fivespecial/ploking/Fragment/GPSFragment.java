@@ -50,8 +50,8 @@ import static android.content.Context.LOCATION_SERVICE;
 public class GPSFragment extends Fragment {
 
     //TAG
-    protected static final String TAG = "GPSFragment";
-
+    private static final String TAG = "GPSFragment";
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
 
     //custom-info-window
     private static class InfoWindowAdapter extends InfoWindow.DefaultTextAdapter {
@@ -72,40 +72,37 @@ public class GPSFragment extends Fragment {
     }
 
     //garbage bins
-    Calculation calculation;
-    public List<BinLocation> binLocationList;
-    BinLocation binLocation;
-    TextView txtNearBin;
-    int binCount;
+    private Calculation calculation;
+    private List<BinLocation> binLocationList;
+    private BinLocation binLocation;
+    private TextView txtNearBin;
+    private int binCount;
 
 
     //txtTimer
-    TextView txtDistance;
+    private TextView txtDistance;
     private TextView txtTime;
-    TextView txtKcal;
+    private TextView txtKcal;
 
-    double currentLon=0;
-    double currentLat=0;
-    double lastLon = 0;
-    double lastLat = 0;
-    float distance_sum = 0;
+    private double currentLon = 0;
+    private double currentLat = 0;
+    private double lastLon = 0;
+    private double lastLat = 0;
+    private float distance_sum = 0;
 
     //timer
-    private ImageButton startBtn, stopBtn, pauseBtn;
+    private ImageButton startButton, stopButton, pauseButton;
     private Boolean isRunning = false;
     private Boolean tButtonclicked = false;
-    Thread timeThread;
+    private Thread timeThread;
 
 
     //kcal
-    int weight = 70;
+    private int weight = 70;
     private float coef = 0.001f; // 1초당 운동계수
-    float calorie = 0;
-
-
+    private float calorie = 0;
 
     private FusedLocationSource locationSource;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private MapFragment mapFragment;
 
     public GPSFragment() {
@@ -132,17 +129,13 @@ public class GPSFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view;
-        view = inflater.inflate(R.layout.fragment_gps, null);
-
-
+        View view = inflater.inflate(R.layout.fragment_gps, container, false);
 
         calculation = new Calculation();
 
-        //define views...
-        startBtn = view.findViewById(R.id.btn_fragment_four_start);
-        stopBtn = view.findViewById(R.id.btn_fragment_four_stop);
-        pauseBtn = view.findViewById(R.id.btn_fragment_four_pause);
+        startButton = view.findViewById(R.id.btn_fragment_four_start);
+        stopButton = view.findViewById(R.id.btn_fragment_four_stop);
+        pauseButton = view.findViewById(R.id.btn_fragment_four_pause);
         View runLayout = view.findViewById(R.id.layout_running);
         View informLayout = view.findViewById(R.id.layout_inform);
 
@@ -151,31 +144,35 @@ public class GPSFragment extends Fragment {
         Animation stopAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.stopbtn_appear);
 
         txtNearBin = view.findViewById(R.id.tv_near_bin_notice);
-        txtDistance = (TextView) view.findViewById(R.id.tv_fragment_four_distance);
-        txtTime = (TextView) view.findViewById(R.id.tv_fragment_four_time);
-        txtKcal = (TextView) view.findViewById(R.id.tv_fragment_four_calorie);
+        txtDistance = view.findViewById(R.id.tv_fragment_four_distance);
+        txtTime = view.findViewById(R.id.tv_fragment_four_time);
+        txtKcal = view.findViewById(R.id.tv_fragment_four_calorie);
 
-        //naverMapfragment start
+        // Naver MapFragment 초기화
         FragmentManager fm = getFragmentManager();
-        mapFragment = (MapFragment)this
-                .getChildFragmentManager()
-                .findFragmentById(R.id.map);
+        mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
         if(mapFragment == null){
             mapFragment = MapFragment.newInstance();
             fm.beginTransaction().add(R.id.fragmentBorc, mapFragment).commit();
         }
 
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-        //test
+
+        /**
+         * @desciption : 비동기로 NaverMap 객체를 가져옴. NaverMap 객체가 준비되면 callback 의 onMapReady(NaverMap) 호출됨.
+         */
         mapFragment.getMapAsync(this::onMapReady);
 
-        startBtn.setOnClickListener((View v) -> {
-            v.setVisibility(View.GONE);
+        // 시작버튼 클릭 리스너
+        startButton.setOnClickListener((View v) -> {
+
+            v.setVisibility(View.GONE); // start 버튼 숨김
             runLayout.setVisibility(View.VISIBLE);
             informLayout.setVisibility(View.VISIBLE);
 
-            pauseBtn.startAnimation(pauseAppear);
-            stopBtn.startAnimation(stopAppear);
+            pauseButton.startAnimation(pauseAppear);
+            stopButton.startAnimation(stopAppear);
 
             isRunning = true;
             timeThread = new Thread(new timeThread());
@@ -183,8 +180,10 @@ public class GPSFragment extends Fragment {
             tButtonclicked = true;
         });
 
-        stopBtn.setOnClickListener((View v) ->{
-            startBtn.setVisibility(View.VISIBLE);
+        // 스탑버튼 클릭 리스너
+        stopButton.setOnClickListener((View v) ->{
+
+            startButton.setVisibility(View.VISIBLE); // 시작버튼을 다시 보이게 함.
             runLayout.setVisibility(View.GONE);
             informLayout.setVisibility(View.GONE);
 
@@ -205,22 +204,22 @@ public class GPSFragment extends Fragment {
 
             isRunning = false;
             timeThread.interrupt();
-//                txtTime.setText("00:00");
             distance_sum = 0;
-//                txtDistance.setText("0.0 m");
         });
 
-        pauseBtn.setOnClickListener((View v) -> {
+        // 멈춤 버튼 클릭 리스너
+        pauseButton.setOnClickListener((View v) -> {
             isRunning = !isRunning;
+
             if(isRunning){
-                pauseBtn.setImageResource(R.drawable.pause_button);
+                pauseButton.setImageResource(R.drawable.pause_button);
             }else{
                 tButtonclicked = true;
-                pauseBtn.setImageResource(R.drawable.start_button);
+                pauseButton.setImageResource(R.drawable.start_button);
             }
         });
 
-        //GPS start...
+        // GPS 시작..
         try {
 
             int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);   //test
@@ -234,22 +233,24 @@ public class GPSFragment extends Fragment {
                 }
             }
 
-            LocationManager lm =(LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-            lm.requestLocationUpdates(lm.GPS_PROVIDER, 0,0, Loclist);
-            Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+            LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            Location loc = null;
 
-            if(loc==null){
+            if (lm != null) {
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, Loclist);
+                loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+
+            if(loc == null){
                 txtDistance.setText("No GPS location found");
+            } else{
+                // 현재 위도와 경도를 설정함.
+                currentLon = loc.getLongitude();
+                currentLat = loc.getLatitude();
             }
-            else{
-                //set Current latitude and longitude
-                currentLon=loc.getLongitude();
-                currentLat=loc.getLatitude();
-            }
-            //Set the last latitude and longitude
-            lastLat=currentLat;
-            lastLon=currentLon;
-            //GPS end...
+            // 마지막으로 측정된 위도, 경도를 저장
+            lastLat = currentLat;
+            lastLon = currentLon;
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -262,16 +263,16 @@ public class GPSFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,  @NonNull int[] grantResults) {
-        if (locationSource.onRequestPermissionsResult(
-                requestCode, permissions, grantResults)) {
+
+        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             return;
         }
-        super.onRequestPermissionsResult(
-                requestCode, permissions, grantResults);
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     // 맵을 생성할 준비가 되었을 때 가장 먼저 호출
-    public void onMapReady(@NonNull NaverMap naverMap) {
+    private void onMapReady(@NonNull NaverMap naverMap) {
 
         double longitude, latitude;
         double dLat, dLong;
@@ -282,7 +283,7 @@ public class GPSFragment extends Fragment {
         final LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         Location location;
 
-        //uisetting
+        // uisetting
         UiSettings uiSettings = naverMap.getUiSettings();
 
         naverMap.setLocationSource(locationSource);
@@ -296,6 +297,7 @@ public class GPSFragment extends Fragment {
         naverMap.setOnMapClickListener((coord, point) -> {
             binsInfo.close();
         });
+        
 
         for(int i = 0; i < binLocationList.size(); i++){
             binLocation = binLocationList.get(i);
@@ -467,7 +469,9 @@ public class GPSFragment extends Fragment {
             int i = 0;
 
             while (true) {
-                while (isRunning) { //일시정지를 누르면 멈춤
+
+                //일시정지를 누르면 멈춤
+                while (isRunning) {
                     Log.d("stopwatch", "while start");
                     Message msg = new Message();
                     msg.arg1 = i++;
@@ -478,12 +482,11 @@ public class GPSFragment extends Fragment {
                         Log.d("stopwatch", "sleep");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                        getActivity().runOnUiThread(new Runnable(){     //test
-                            @Override
-                            public void run() {
-                                txtTime.setText("");
-                                txtTime.setText("00:00");
-                            }
+                        //test
+                        getActivity().runOnUiThread(() -> {
+
+                            txtTime.setText("");
+                            txtTime.setText("00:00");
                         });
                         return;
                     }
