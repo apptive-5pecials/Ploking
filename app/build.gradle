@@ -69,10 +69,10 @@ dependencies {
     // MPAndroid
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
-    // Naver maps
+    // FusedLocationClient
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
-    //FusedLocationSource
+    // Naver maps
     implementation 'com.naver.maps:map-sdk:3.5.0'
 
     // Guava
