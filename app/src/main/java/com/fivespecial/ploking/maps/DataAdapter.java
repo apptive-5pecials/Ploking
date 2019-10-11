@@ -6,38 +6,28 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.fivespecial.ploking.maps.BinLocation;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataAdapter {
-    protected static final String TAG = "DataAdapter";
 
-    protected static final String TABLE_NAME = "garbage_location";
+    private static final String TAG = "DataAdapter";
+    private static final String TABLE_NAME = "garbage_location";
 
-    private final Context mContext;
     private SQLiteDatabase mDB;
     private DBHelper mDBHelper;
 
     public DataAdapter(Context context){
-        this.mContext = context;
-        mDBHelper = new DBHelper(mContext);
+        mDBHelper = new DBHelper(context);
     }
 
-    public DataAdapter createDatabase() throws SQLException{
-        try{
-            mDBHelper.createDataBase();
-        }
-        catch (IOException mIOException){
-            Log.e(TAG, mIOException.toString() + " UnableToCreateDatabase");
-            throw new Error("UnableToCreateDatabase");
-        }
-        return this;
+    public void createDatabase() throws SQLException{
+        mDBHelper.createDataBase();
     }
 
-    public DataAdapter open() throws SQLException{
+    public void open() throws SQLException{
+
         try{
             mDBHelper.openDataBase();
             mDBHelper.close();
@@ -47,25 +37,24 @@ public class DataAdapter {
             Log.e(TAG, "open >>"+ mSQLException.toString());
             throw mSQLException;
         }
-        return this;
     }
 
     public void close(){
         mDBHelper.close();
     }
 
-    public List getTableData(){
+    public ArrayList<BinLocation> getTableData(){
         try{
 
             String sql = "SELECT * FROM " + TABLE_NAME;
 
-            List binList = new ArrayList();
+            ArrayList<BinLocation> binList = new ArrayList<>();
 
             //모델 선언, null is redundant
             BinLocation binLocation;
 
             Cursor mCur = mDB.rawQuery(sql, null);
-            if(mCur!=null){
+            if(mCur != null){
 
                 //칼럼의 마지막까지
                 while(mCur.moveToNext()){
@@ -78,11 +67,13 @@ public class DataAdapter {
 
                     binList.add(binLocation);
                 }
-            }
-            return binList;
-        }
 
-        catch (SQLException mSQLException){
+                mCur.close();
+            }
+
+            return binList;
+
+        } catch (SQLException mSQLException){
             Log.e(TAG, "getTestData >>" + mSQLException.toString());
             throw mSQLException;
         }
