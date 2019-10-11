@@ -43,7 +43,7 @@ public class DataAdapter {
         mDBHelper.close();
     }
 
-    public ArrayList<BinLocation> getTableData(){
+    private ArrayList<BinLocation> getTableData(){
         try{
 
             String sql = "SELECT * FROM " + TABLE_NAME;
@@ -77,5 +77,18 @@ public class DataAdapter {
             Log.e(TAG, "getTestData >>" + mSQLException.toString());
             throw mSQLException;
         }
+    }
+
+    public ArrayList<BinLocation> initLoadData() {
+
+        createDatabase();
+        open();
+
+        ArrayList<BinLocation> binLocationList = getTableData();
+
+        close();
+
+        return binLocationList;
+
     }
 }

@@ -107,18 +107,14 @@ public class GPSFragment extends BaseFragment {
     private float calorie = 0;
     private FusedLocationSource locationSource;
 
+    // View Components
     private View runLayout;
     private View informLayout;
     private Animation pauseAppear;
     private Animation stopAppear;
 
-    @Override
-    public void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
-
-        initLoadDB(); // onMapReady 에서 DbHelper 에 접근했던 것을 onCreate 에서 하는것으로 변경
-
-    }
+    // DataAdapter
+    private DataAdapter mDbHelper;
 
     @Override
     public int getResourceId() {
@@ -130,6 +126,7 @@ public class GPSFragment extends BaseFragment {
 
         calculation = new Calculation();
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+        mDbHelper = new DataAdapter(getActivity());
 
         startButton = view.findViewById(R.id.btn_fragment_four_start);
         stopButton = view.findViewById(R.id.btn_fragment_four_stop);
@@ -207,6 +204,9 @@ public class GPSFragment extends BaseFragment {
 
     @Override
     public void setupImplementation() {
+
+        binLocationList = mDbHelper.initLoadData();
+
         try {
 
             //API를 호출해 클라이언트 ID를 지정
@@ -479,18 +479,5 @@ public class GPSFragment extends BaseFragment {
                 }
             }
         }
-    }
-
-    private void initLoadDB(){
-
-        DataAdapter mDBHelper = new DataAdapter(getActivity());
-        mDBHelper.createDatabase();
-        mDBHelper.open();
-
-        //db에 있는 값들을 model에 적용해서 넣는다.
-        binLocationList = mDBHelper.getTableData();
-
-        //db 닫기;
-        mDBHelper.close();
     }
 }
