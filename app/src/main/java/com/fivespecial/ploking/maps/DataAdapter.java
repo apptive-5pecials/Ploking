@@ -6,9 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DataAdapter {
 
@@ -22,11 +20,11 @@ public class DataAdapter {
         mDBHelper = new DBHelper(context);
     }
 
-    public void createDatabase() throws SQLException{
+    private void createDatabase() throws SQLException{
         mDBHelper.createDataBase();
     }
 
-    public void open() throws SQLException{
+    private void open() throws SQLException{
 
         try{
             mDBHelper.openDataBase();
@@ -39,7 +37,7 @@ public class DataAdapter {
         }
     }
 
-    public void close(){
+    private void close(){
         mDBHelper.close();
     }
 
