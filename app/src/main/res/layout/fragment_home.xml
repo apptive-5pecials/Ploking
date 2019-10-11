@@ -85,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="16dp"
             app:layout_constraintLeft_toRightOf="@id/fragment_home_compass_fragment"
             app:layout_constraintRight_toLeftOf="@id/button_trash"
             app:layout_constraintTop_toTopOf="parent">
