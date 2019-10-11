@@ -54,7 +54,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void setupImplementation() {
 
-        if (getActivity().getApplicationContext() != null) {
+        if (getActivity() != null) {
             SharedPreferences sFile = getActivity().getApplicationContext().getSharedPreferences("sFile", Context.MODE_PRIVATE);
 
             float ftDistance = sFile.getFloat("distance", 0);
