@@ -9,9 +9,10 @@ import android.os.AsyncTask
 
 class CheckTypesTask(activity: Activity) : AsyncTask<Void, Void, Void>() {
 
-    private var asyncDialog = ProgressDialog(activity)
+    private var asyncDialog: ProgressDialog = ProgressDialog(activity)
 
     override fun onPreExecute() {
+
         asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         asyncDialog.setMessage("로딩중입니다..")
 
@@ -23,6 +24,8 @@ class CheckTypesTask(activity: Activity) : AsyncTask<Void, Void, Void>() {
     override fun doInBackground(vararg args: Void): Void? {
         try {
             for (i in 0..4) {
+
+                // TODO Why Sleep Thread for 2 seconds? by Lee Oh Hyoung on 2019.10.11
                 //asyncDialog.setProgress(i * 30);
                 Thread.sleep(500)
             }
@@ -33,8 +36,8 @@ class CheckTypesTask(activity: Activity) : AsyncTask<Void, Void, Void>() {
         return null
     }
 
-    override fun onPostExecute(result: Void) {
-        asyncDialog.dismiss()
+    override fun onPostExecute(result: Void?) {
         super.onPostExecute(result)
+        asyncDialog.dismiss()
     }
 }
