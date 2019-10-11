@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.fivespecial.ploking.fragment.*;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,30 +19,31 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
     private Map<Integer,String> mFragmentTags;
     private int PageCount;
 
-
     public ViewpagerAdapter(FragmentManager fm, int pageCount) {
         super(fm);
+
         mFragmentManager = fm;
-        mFragmentTags= new HashMap<Integer, String>();
+        mFragmentTags = new HashMap<>();
         this.PageCount = pageCount;
 
     }
 
+    @NotNull
     @Override
-    public Fragment getItem(int i) {
+    public Fragment getItem(int i) throws IllegalStateException{
         switch (i){
             case 0:
-                return new HomeFragment().newInstance();
+                return new HomeFragment();
             case 1:
-                return new AlbumFragment().newInstance();
+                return new AlbumFragment();
             case 2:
-                return new CameraFragment().newInstance();
+                return new CameraFragment();
             case 3:
-                return new GPSFragment().newInstance();
+                return new GPSFragment();
             case 4:
-                return new SettingFragment().newInstance();
+                return new SettingFragment();
             default:
-                return null;
+                throw new IllegalStateException("올바르지 않은 접근입니다");
         }
     }
 
@@ -54,8 +57,9 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
         return "Page " + position;
     }
 
+    @NotNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NotNull ViewGroup container, int position) {
         Object object = super.instantiateItem(container, position);
         if (object instanceof Fragment) {
             Fragment fragment = (Fragment) object;
@@ -73,7 +77,7 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
         }
         return fragment;
     }
-    public int getItemPosition(Object object) {
+    public int getItemPosition(@NotNull Object object) {
         return POSITION_NONE;
     }
 
