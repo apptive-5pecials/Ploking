@@ -45,8 +45,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static android.content.Context.LOCATION_SERVICE;
-
 public class GPSFragment extends BaseFragment {
 
     public static GPSFragment newInstance(){
@@ -81,21 +79,21 @@ public class GPSFragment extends BaseFragment {
     private static final double DEFAULT_BIN_LONGITUDE = 129.085166;
 
     // Garbage Bins
-    private Calculation calculation;
+    private Calculation calculationNearBin;
     private List<BinLocation> binLocationList;
-    private TextView txtNearBin;
-    private int binCount = 0;
+    private TextView binNear1kmTextView;
+    private int binCountNear1km = 0;
 
     // TextTimer
     private TextView txtDistance;
     private TextView txtTime;
     private TextView txtKcal;
 
-    private double currentLon = 0;
-    private double currentLat = 0;
-    private double lastLon = 0;
-    private double lastLat = 0;
-    private float distance_sum = 0;
+    private double currentLat = DEFAULT_CAMERA_LATITUDE;
+    private double currentLon = DEFAULT_CAMERA_LONGITUDE;
+    private double lastLat = DEFAULT_CAMERA_LATITUDE;
+    private double lastLon = DEFAULT_CAMERA_LONGITUDE;
+    private float distance_sum = 0f;
 
     // Timer
     private ImageButton startButton, stopButton, pauseButton;
@@ -124,7 +122,7 @@ public class GPSFragment extends BaseFragment {
     @Override
     public void initComponent(View view) {
 
-        calculation = new Calculation();
+        calculationNearBin = new Calculation();
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
         mDbHelper = new DataAdapter(getActivity());
 
@@ -138,7 +136,7 @@ public class GPSFragment extends BaseFragment {
         pauseAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.pausebtn_appear);
         stopAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.stopbtn_appear);
 
-        txtNearBin = view.findViewById(R.id.tv_near_bin_notice);
+        binNear1kmTextView = view.findViewById(R.id.tv_near_bin_notice);
         txtDistance = view.findViewById(R.id.tv_fragment_four_distance);
         txtTime = view.findViewById(R.id.tv_fragment_four_time);
         txtKcal = view.findViewById(R.id.tv_fragment_four_calorie);
@@ -192,7 +190,7 @@ public class GPSFragment extends BaseFragment {
         // 멈춤 버튼 클릭 리스너
         pauseButton.setOnClickListener((View v) -> {
             isRunning = !isRunning;
-
+            
             if(isRunning){
                 pauseButton.setImageResource(R.drawable.pause_button);
             }else{
@@ -233,10 +231,7 @@ public class GPSFragment extends BaseFragment {
         // GPS 시작..
         try {
 
-            boolean permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED;
-            boolean permissionFineLocation = !ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
-
-            if(permissionCheck && permissionFineLocation){
+            if(getActivity() != null && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(
                         getActivity(), // activity
                         new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, // permissions
@@ -245,7 +240,7 @@ public class GPSFragment extends BaseFragment {
 
             }
 
-            LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             Location loc = null;
 
             if (lm != null) {
@@ -255,6 +250,7 @@ public class GPSFragment extends BaseFragment {
 
             if(loc == null){
                 txtDistance.setText("No GPS location found");
+
             } else{
                 // 현재 위도와 경도를 설정함.
                 currentLon = loc.getLongitude();
@@ -282,57 +278,62 @@ public class GPSFragment extends BaseFragment {
     // 맵을 생성할 준비가 되었을 때 가장 먼저 호출
     private void onMapReady(@NonNull NaverMap naverMap) {
 
-        double longitude, latitude;
-        double dLat, dLong;
-        final InfoWindow binsInfo = new InfoWindow();
-
-        final LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        Location location;
+        InfoWindow binsInfo = new InfoWindow();
+        
+        double myLatitude = DEFAULT_CAMERA_LATITUDE, myLongitude = DEFAULT_CAMERA_LONGITUDE;
+        double binLatitude, binLongitude;
 
         try {
             //position 속성을 지정하면 위치 오버레이의 좌표를 변경할 수 있다.
             //처음 생성된 위치 오버레이는 카메라의 초기 좌표에 위치해 있다.
-            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
-        catch(SecurityException | NullPointerException e){
+            if(getActivity() != null) {
+                LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                
+                if(lm != null) {
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    
+                    if(location != null) {
+                        myLatitude = location.getLatitude();
+                        myLongitude = location.getLongitude();
+                    }
+                }
+            }
+
+            Marker marker = new Marker();
+            marker.setPosition(new LatLng(myLatitude, myLongitude));
+
+            // UI settings
+            UiSettings uiSettings = naverMap.getUiSettings();
+            uiSettings.setLocationButtonEnabled(true);
+
+            naverMap.setLocationSource(locationSource);
+            naverMap.setOnMapClickListener((coord, point) -> {
+                binsInfo.close();
+            });
+            naverMap.getLocationOverlay().setVisible(true);
+            naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+            // 오버레이 : 지리적 정보를 시작적으로 나타내느 요소. 개발자가 지도 위에 자유롭게 배치할 수 있음. 마커, 정보창(InfoWindow), 셰이프 등
+            LocationOverlay locationOverlay = naverMap.getLocationOverlay();
+            locationOverlay.setVisible(true);
+            locationOverlay.setBearing(90); // 방위를 지정함.
+            locationOverlay.setIconWidth(100); // 아이콘의 너비를 지정함
+            locationOverlay.setIconHeight(100); // 아이콘의 높이를 지정함.
+            locationOverlay.setPosition(new LatLng(myLatitude, myLongitude)); // 위치 지정
+            
+        }  catch(SecurityException | NullPointerException e){
             Log.v(TAG, "CANNOT be find GPS signal.");
-            latitude = DEFAULT_CAMERA_LATITUDE;
-            longitude = DEFAULT_CAMERA_LONGITUDE;
         }
-
-        Marker marker = new Marker();
-        marker.setPosition(new LatLng(latitude, longitude));
-
-        // uisetting
-        UiSettings uiSettings = naverMap.getUiSettings();
-        uiSettings.setLocationButtonEnabled(true);
-
-        naverMap.setLocationSource(locationSource);
-        naverMap.setOnMapClickListener((coord, point) -> {
-            binsInfo.close();
-        });
-        naverMap.getLocationOverlay().setVisible(true);
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-
-        // 오버레이 : 지리적 정보를 시작적으로 나타내느 요소. 개발자가 지도 위에 자유롭게 배치할 수 있음.
-        // 마커, 정보창(InfoWindow), 셰이프 등
-        LocationOverlay locationOverlay = naverMap.getLocationOverlay();
-        locationOverlay.setVisible(true);
-        locationOverlay.setBearing(90); // 방위를 지정함.
-        locationOverlay.setIconWidth(100); // 아이콘의 너비를 지정함
-        locationOverlay.setIconHeight(100); // 아이콘의 높이를 지정함.
-        locationOverlay.setPosition(new LatLng(latitude, longitude)); // 위치 지정
+        
 
         for(BinLocation binLocation : binLocationList){
 
             if(binLocation.getLatitude() != null && binLocation.getLongitude() != null) {
-                dLat = binLocation.getLatitude();
-                dLong = binLocation.getLongitude();
+                binLatitude = binLocation.getLatitude();
+                binLongitude = binLocation.getLongitude();
             } else {
-                dLat = DEFAULT_BIN_LATITUDE;
-                dLong = DEFAULT_BIN_LONGITUDE;
+                binLatitude = DEFAULT_BIN_LATITUDE;
+                binLongitude = DEFAULT_BIN_LONGITUDE;
             }
 
             binsInfo.setAdapter(new InfoWindowAdapter(getActivity()));
@@ -341,19 +342,19 @@ public class GPSFragment extends BaseFragment {
                 return true;
             });
 
-            Marker bins = new Marker();
-            bins.setPosition(new LatLng(dLat, dLong));
-            bins.setIcon(OverlayImage.fromResource(R.drawable.bin_marker));
-            bins.setOnClickListener(overlay -> {
-                binsInfo.open(bins);
+            Marker binMarker = new Marker();
+            binMarker.setPosition(new LatLng(binLatitude, binLongitude));
+            binMarker.setIcon(OverlayImage.fromResource(R.drawable.bin_marker));
+            binMarker.setOnClickListener(overlay -> {
+                binsInfo.open(binMarker);
                 return true;
             });
-            bins.setTag(binLocation.getDescription());
-            bins.setMap(naverMap);
+            binMarker.setTag(binLocation.getDescription());
+            binMarker.setMap(naverMap);
         }
 
-        binCount = calculation.nearBins(binLocationList, latitude, longitude);
-        txtNearBin.setText(getString(R.string.near_bin_notice, binCount));
+        binCountNear1km = calculationNearBin.nearBins(binLocationList, myLatitude, myLongitude);
+        binNear1kmTextView.setText(getString(R.string.near_bin_notice, binCountNear1km));
 
     }
 
@@ -366,52 +367,56 @@ public class GPSFragment extends BaseFragment {
 
                 try{
                     //start location manager
-                    LocationManager lm =(LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+                    if(getActivity() != null) {
+                        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-                    //Request new location
-                    lm.requestLocationUpdates(lm.GPS_PROVIDER, 0,0, this);
+                        if(lm != null) {
+                            //Request new location
+                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, this);
 
-                    //Get new location
-                    Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+                            //Get new location
+                            Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                    //get the current lat and long
-                    currentLat = loc.getLatitude();
-                    currentLon = loc.getLongitude();
+                            if(loc != null) {
+                                //get the current lat and long
+                                currentLat = loc.getLatitude();
+                                currentLon = loc.getLongitude();
+                            }
 
-                    binCount = calculation.nearBins(binLocationList, currentLat, currentLon);
+                            binCountNear1km = calculationNearBin.nearBins(binLocationList, currentLat, currentLon);
 
-                    txtNearBin.setText(getString(R.string.near_bin_notice, binCount));
-
-
-                    if(isRunning){
-                        if(tButtonclicked){
-                            lastLat = currentLat;
-                            lastLon = currentLon;
-                            tButtonclicked = false;
+                            binNear1kmTextView.setText(getString(R.string.near_bin_notice, binCountNear1km));
                         }
+                    }
+                } catch(SecurityException | NullPointerException e){
+                    e.printStackTrace();
+                }
 
-                        Location locationA = new Location("point A");
-                        locationA.setLatitude(lastLat);
-                        locationA.setLongitude(lastLon);
-
-                        Location locationB = new Location("point B");
-                        locationB.setLatitude(currentLat);
-                        locationB.setLongitude(currentLon);
-
-                        float distanceMeters = locationA.distanceTo(locationB);
-                        Log.v(TAG, String.format("%f", lastLon));
-                        Log.v(TAG, String.format("%f", currentLon));
-
-                        distance_sum += distanceMeters;
-
+                if(isRunning){
+                    if(tButtonclicked){
                         lastLat = currentLat;
                         lastLon = currentLon;
-
-                        txtDistance.setText(String.format("%.1f m",distance_sum ));
+                        tButtonclicked = false;
                     }
-                }
-                catch(SecurityException | NullPointerException e){
-                    e.printStackTrace();
+
+                    Location locationA = new Location("point A");
+                    locationA.setLatitude(lastLat);
+                    locationA.setLongitude(lastLon);
+
+                    Location locationB = new Location("point B");
+                    locationB.setLatitude(currentLat);
+                    locationB.setLongitude(currentLon);
+
+                    float distanceMeters = locationA.distanceTo(locationB);
+                    Log.v(TAG, String.format("%f", lastLon));
+                    Log.v(TAG, String.format("%f", currentLon));
+
+                    distance_sum += distanceMeters;
+
+                    lastLat = currentLat;
+                    lastLon = currentLon;
+
+                    txtDistance.setText(String.format("%.1f m",distance_sum ));
                 }
             }
 
