@@ -16,25 +16,22 @@ class Calculation {
 
         binLocationList?.forEach { bin ->
 
-            if(bin.latitude != null && bin.longitude != null) {
+            // Point A
+            val locationA: Location = Location("point A").apply {
+                latitude = bin.latitude
+                longitude = bin.longitude
+            }
 
-                // Point A
-                val locationA: Location = Location("point A").apply {
-                    latitude = bin.latitude!!
-                    longitude = bin.longitude!!
-                }
+            // Point B
+            val locationB = Location("point B").apply {
+                latitude = currentLat
+                longitude = currentLong
+            }
 
-                // Point B
-                val locationB = Location("point B").apply {
-                    latitude = currentLat
-                    longitude = currentLong
-                }
+            if(locationA.distanceTo(locationB) < MINIMUM_DISTANCE_DIFFERENCE) {
+                // nearBin.add(bin)
 
-                if(locationA.distanceTo(locationB) < MINIMUM_DISTANCE_DIFFERENCE) {
-                    // nearBin.add(bin)
-
-                    count++
-                }
+                count++
             }
         }
 

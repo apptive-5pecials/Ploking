@@ -324,13 +324,8 @@ public class GPSFragment extends BaseFragment {
 
         for(BinLocation binLocation : binLocationList){
 
-            if(binLocation.getLatitude() != null && binLocation.getLongitude() != null) {
-                binLatitude = binLocation.getLatitude();
-                binLongitude = binLocation.getLongitude();
-            } else {
-                binLatitude = DEFAULT_BIN_LATITUDE;
-                binLongitude = DEFAULT_BIN_LONGITUDE;
-            }
+            binLatitude = binLocation.getLatitude();
+            binLongitude = binLocation.getLongitude();
 
             binsInfo.setAdapter(new InfoWindowAdapter(getActivity()));
             binsInfo.setOnClickListener(overlay -> {
