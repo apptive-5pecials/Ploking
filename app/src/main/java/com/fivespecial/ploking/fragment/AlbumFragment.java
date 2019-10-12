@@ -41,10 +41,6 @@ public class AlbumFragment extends Fragment {
 
     }
 
-    public static AlbumFragment newInstance(){
-        return new AlbumFragment();
-    }
-
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
     }

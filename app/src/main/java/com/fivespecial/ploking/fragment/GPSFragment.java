@@ -47,10 +47,6 @@ import java.util.List;
 
 public class GPSFragment extends BaseFragment {
 
-    public static GPSFragment newInstance(){
-        return new GPSFragment();
-    }
-
     //custom-info-window
     private static class InfoWindowAdapter extends InfoWindow.DefaultTextAdapter {
 

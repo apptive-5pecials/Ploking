@@ -60,10 +60,6 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
     SoundPool pool;
     int ddok;
 
-    public static CameraFragment newInstance(){
-        return new CameraFragment();
-    }
-
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
                 pool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);

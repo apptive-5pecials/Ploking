@@ -16,10 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class HomeFragment extends BaseFragment {
 
-    public static HomeFragment newInstance(){
-        return new HomeFragment();
-    }
-
     private TextView tvDistance;
     private TextView tvKcal;
     private ImageView trashButton;
