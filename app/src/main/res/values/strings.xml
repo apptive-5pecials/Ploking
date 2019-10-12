@@ -35,4 +35,13 @@
 
     <string name="near_bin_notice">1km 근방 쓰레기통 : %d</string>
 
+    <!-- Create by Lee Oh Hyoung on 2019.10.12 -->
+    <string name="fragment_home_nearest_bin_description_sub_title">가장 가까운 쓰레기통</string>
+    <string name="fragment_home_nearest_bin_description_example">부산대역 앞</string>
+    <string name="fragment_home_nearest_bin_distance_example">여기서 560m</string>
+
+    <string name="fragment_home_nearest_bin_distance_format_kilo_meter">여기서 %dkm</string>
+    <string name="fragment_home_nearest_bin_distance_format_meter">여기서 %dm</string>
+
+
 </resources>
