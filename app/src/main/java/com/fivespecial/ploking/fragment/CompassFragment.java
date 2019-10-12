@@ -87,8 +87,8 @@ public class CompassFragment extends Fragment {
     }
 
     private void adjustArrow(float azimuth) {
-        Log.d(TAG, "will set rotation from " + currentAzimuth + " to "
-                + azimuth);
+        /*Log.d(TAG, "will set rotation from " + currentAzimuth + " to "
+                + azimuth);*/
 
         Animation an = new RotateAnimation(-currentAzimuth, -azimuth,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
