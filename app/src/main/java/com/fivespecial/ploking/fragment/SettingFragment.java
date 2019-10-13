@@ -1,30 +1,31 @@
 package com.fivespecial.ploking.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.fivespecial.ploking.R;
+import com.fivespecial.ploking.base.BaseFragment;
 
-public class SettingFragment extends Fragment {
+import org.jetbrains.annotations.NotNull;
+
+public class SettingFragment extends BaseFragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public int getResourceId() {
+        return R.layout.fragment_setting;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void initComponent(@NotNull View view) {
 
-        View view;
-        view = inflater.inflate(R.layout.fragment_setting, null);
+    }
 
-        return view;
+    @Override
+    public void setupListeners(@NotNull View view) {
+
+    }
+
+    @Override
+    public void setupImplementation() {
+
     }
 }
