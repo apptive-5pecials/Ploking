@@ -11,8 +11,6 @@ import android.os.Handler;
 
 import com.fivespecial.ploking.R;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
