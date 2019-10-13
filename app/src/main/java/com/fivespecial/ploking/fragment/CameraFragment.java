@@ -28,7 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.fivespecial.ploking.activity.TabbedActivity;
 import com.fivespecial.ploking.adapterEtc.CameraUtil;
-import com.fivespecial.ploking.adapterEtc.DbHelper;
+import com.fivespecial.ploking.adapterEtc.AlbumDbHelper;
 import com.fivespecial.ploking.R;
 
 import java.io.File;
@@ -48,7 +48,7 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
     Camera camera;
     List<Camera.Size> supportedPreviewSizes;
     android.hardware.Camera.Size previewSize;
-    DbHelper dbHelper;
+    AlbumDbHelper dbHelper;
     AlbumFragment albumFragment;
     String path;
     String FILE_NAME;
@@ -79,7 +79,7 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
             imageView=(ImageView)view.findViewById(R.id.shutter_btn);
             preimg=(ImageView)view.findViewById(R.id.preimage);
 
-            dbHelper= new DbHelper(getActivity());
+            dbHelper= new AlbumDbHelper(getActivity());
 
 
             textureView.setSurfaceTextureListener(this);

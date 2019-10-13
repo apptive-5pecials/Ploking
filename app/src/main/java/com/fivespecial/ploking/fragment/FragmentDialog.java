@@ -26,7 +26,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import com.fivespecial.ploking.adapterEtc.DbHelper;
+import com.fivespecial.ploking.adapterEtc.AlbumDbHelper;
 import com.fivespecial.ploking.R;
 
 import java.io.File;
@@ -143,7 +143,7 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
                 finish();
                 break;
             case R.id.dailog_delete:
-                DbHelper database = new DbHelper(getContext());
+                AlbumDbHelper database = new AlbumDbHelper(getContext());
                 database.deleteData(file_name);
 
                 try {
