@@ -29,7 +29,7 @@ public class AlbumFragment extends BaseFragment {
 
     @Override
     public int getResourceId() {
-        return R.layout.fragment_album;
+        return R.layout.fragment_gallery;
     }
 
     @Override

@@ -11,7 +11,7 @@ public class SettingFragment extends BaseFragment {
 
     @Override
     public int getResourceId() {
-        return R.layout.fragment_setting;
+        return R.layout.fragment_settings;
     }
 
     @Override

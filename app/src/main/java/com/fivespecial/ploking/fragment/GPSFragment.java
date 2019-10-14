@@ -112,7 +112,7 @@ public class GPSFragment extends BaseFragment {
 
     @Override
     public int getResourceId() {
-        return R.layout.fragment_gps;
+        return R.layout.fragment_maps;
     }
 
     @Override
