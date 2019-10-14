@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#ee9c48</color>
+    <color name="colorPrimaryDark">#f56e47</color>
+    <color name="colorAccent">#f56e47</color>
 
     <color name="color_text_green">#3ea055</color>
 
-    <color name="linecolor">#ddd</color>
-    <color name="GREEN">#3ea055</color>
-    <color name="gpsTitle">#888888</color>
+    <color name="v1_line_color_white">#ddd</color>
+    <color name="v1_color_green">#3ea055</color>
+    <color name="v1_color_title_gps">#888888</color>
+
+    <color name="v2_background_start_color">#f56e47</color>
+    <color name="v2_background_center_color">#f56e47</color>
+    <color name="v2_background_end_color">#ee9c48</color>
+
 </resources>

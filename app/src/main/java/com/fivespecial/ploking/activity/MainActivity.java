@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getBaseContext(),TabbedActivity.class));
 
             finish();
-        }, 500);
+        }, 2500);
 
 
     }

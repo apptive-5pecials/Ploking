@@ -30,7 +30,7 @@
             />
 
         <ImageView
-            android:src="@drawable/whiterounded"
+            android:src="@drawable/v2_background_radius_20dp_rounded_white"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
 

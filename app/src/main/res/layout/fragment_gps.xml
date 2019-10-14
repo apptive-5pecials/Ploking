@@ -61,7 +61,7 @@
             android:id="@+id/layout_inform"
             android:layout_width="303.7dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/whiterounded"
+            android:background="@drawable/v2_background_radius_20dp_rounded_white"
             android:orientation="horizontal"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
@@ -82,7 +82,7 @@
                     android:layout_marginBottom="10dp"
                     android:lineSpacingExtra="9sp"
                     android:text="시간"
-                    android:textColor="@color/gpsTitle"
+                    android:textColor="@color/v1_color_title_gps"
                     android:textSize="14.7dp" />
 
                 <TextView
@@ -113,7 +113,7 @@
                     android:layout_marginBottom="10dp"
                     android:lineSpacingExtra="9sp"
                     android:text="이동 거리"
-                    android:textColor="@color/gpsTitle"
+                    android:textColor="@color/v1_color_title_gps"
                     android:textSize="14.7dp" />
 
                 <TextView
@@ -146,7 +146,7 @@
                     android:layout_marginBottom="10dp"
                     android:lineSpacingExtra="9sp"
                     android:text="칼로리"
-                    android:textColor="@color/gpsTitle"
+                    android:textColor="@color/v1_color_title_gps"
                     android:textSize="14.7dp" />
 
                 <TextView
