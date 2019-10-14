@@ -37,10 +37,8 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new AlbumFragment();
             case 2:
-                return new CameraFragment();
-            case 3:
                 return new GPSFragment();
-            case 4:
+            case 3:
                 return new SettingFragment();
             default:
                 throw new IllegalStateException("올바르지 않은 접근입니다");

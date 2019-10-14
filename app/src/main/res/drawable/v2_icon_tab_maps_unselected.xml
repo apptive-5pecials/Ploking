@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector android:height="19.057852dp" android:viewportHeight="56.497"
+    android:viewportWidth="59.29" android:width="20dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/v2_color_tab_unselected"
+        android:pathData="M29.961,24.682a6.241,6.241 0,1 0,-6.241 -6.241,6.249 6.249,0 0,0 6.241,6.241zM29.961,13.982a4.458,4.458 0,1 1,-4.458 4.458,4.463 4.463,0 0,1 4.458,-4.458z"
+        android:strokeColor="@color/v2_color_tab_unselected" android:strokeWidth="3"/>
+    <path android:fillColor="@color/v2_color_tab_unselected"
+        android:pathData="M47.15,34.489h-6.385l2.717,-3.923c5.131,-6.84 4.389,-18.082 -1.588,-24.058a17.1,17.1 0,0 0,-24.181 0c-5.977,5.976 -6.719,17.219 -1.609,24.031l2.736,3.951h-6.7L2.376,54.997h54.539zM17.55,29.496C12.916,23.315 13.576,13.162 18.976,7.768a15.316,15.316 0,0 1,21.659 0c5.394,5.393 6.059,15.547 1.4,21.755L29.803,47.189l-8.794,-12.7zM13.267,36.272L20.076,36.272l9.729,14.049 9.728,-14.049h6.492L54.09,53.215L5.201,53.215z"
+        android:strokeColor="@color/v2_color_tab_unselected" android:strokeWidth="3"/>
+</vector>

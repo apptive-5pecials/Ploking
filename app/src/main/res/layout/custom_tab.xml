@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
 
     <ImageView
+        android:id="@+id/tab_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/v2_selector_tab_home"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/tab_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tab_icon"
-        android:padding="12dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:text="Home"
+        android:textColor="@color/v2_color_tab_unselected"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:fontFamily="@font/noto_bold"
+        android:includeFontPadding="false"/>
 
 </LinearLayout>
