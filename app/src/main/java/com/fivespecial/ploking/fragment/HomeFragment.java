@@ -59,8 +59,8 @@ public class HomeFragment extends BaseFragment {
     public void initComponent(@NotNull View view) {
         mHomeDbHelper = new DataAdapter(getActivity());
 
-        tvDistance = view.findViewById(R.id.home_steps);
-        tvKcal = view.findViewById(R.id.home_kcals);
+        //tvDistance = view.findViewById(R.id.home_steps);
+        //tvKcal = view.findViewById(R.id.home_kcals);
         trashButton = view.findViewById(R.id.button_trash);
 
         nearestBinDescription = view.findViewById(R.id.fragment_home_nearest_bin_description_text_view);
@@ -100,8 +100,8 @@ public class HomeFragment extends BaseFragment {
 
             ftDistance = ftDistance / 1000; // 미터->킬로미터
 
-            tvDistance.setText("총 활동량 \n" + String.format("%.1f", ftDistance) + " km");
-            tvKcal.setText("백선욱 님은 총\n"+ String.format("%.0f", ftKcal) + "kcal를 소비했습니다.");
+            //tvDistance.setText("총 활동량 \n" + String.format("%.1f", ftDistance) + " km");
+            //tvKcal.setText("백선욱 님은 총\n"+ String.format("%.0f", ftKcal) + "kcal를 소비했습니다.");
         }
     }
 

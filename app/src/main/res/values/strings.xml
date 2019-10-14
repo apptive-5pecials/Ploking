@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ploking</string>
+    <string name="app_name">Plower</string>
 
     <string name="compass_dial" translatable="false">Compass Dial</string>
     <string name="compass_hands" translatable="false">Compass Hands</string>

@@ -4,60 +4,113 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="@color/v2_background_main_fragment_home">
 
-    <FrameLayout
-        android:id="@+id/fragment_home_frame_layout_1"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_home_constraint_layout_tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="228dp"
+        android:background="@drawable/v2_background_main_gradient"
+        android:paddingTop="28dp"
+        android:paddingBottom="16dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:clipToPadding="false"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:layout_marginBottom="30dp"
-            android:src="@drawable/home_title"
-            android:layout_gravity="top"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="24sp"
+            android:textColor="@color/color_text_white"
+            android:fontFamily="@font/noto_bold"
+            android:includeFontPadding="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/king"/>
+        <TextView
+            android:id="@+id/fragment_home_text_view_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:text="Baek"
+            android:textColor="@color/color_text_white"
+            android:textSize="20sp"
+            android:fontFamily="@font/noto_regular"
+            android:includeFontPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/fragment_home_frame_layout_user_profile"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_home_frame_layout_user_profile"/>
 
-            <TextView
-                android:id="@+id/home_kcals"
+        <FrameLayout
+            android:id="@+id/fragment_home_frame_layout_user_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/v2_background_oval_profile_user"
+            android:elevation="12dp"
+            app:srcCompat="@drawable/v2_image_default_user_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="16dp"
-                android:textColor="#000"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/v2_image_default_user_profile"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/fragment_home_text_view_today_cal_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calories burned today"
+            android:textSize="18sp"
+            android:textColor="@color/color_text_white"
+            android:fontFamily="@font/noto_medium"
+            android:includeFontPadding="false"
+            app:layout_constraintBottom_toTopOf="@id/fragment_home_linear_layout_today_cal"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/fragment_home_linear_layout_today_cal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <TextView
+                android:id="@+id/fragment_home_text_view_today_cal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="53"
+                android:textColor="@color/color_text_white"
+                android:textSize="56sp"
+                android:includeFontPadding="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kcal"
                 android:textSize="18sp"
-                android:fontFamily="@font/noto_light"
-                android:text="백선욱 님은 총\n420kcal를 소비했습니다." />
+                android:textColor="@color/color_text_white"
+                android:fontFamily="@font/noto_medium"
+                android:includeFontPadding="false"/>
 
-            <TextView
-                android:id="@+id/home_steps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:gravity="start"
-                android:layout_gravity="center_vertical|end"
-                android:fontFamily="@font/noto_light"
-                android:textColor="#fff"
-                android:text="총 활동량 \n 0.0 km"/>
-    </FrameLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/fragment_home_graph_image_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/graph"
-        app:layout_constraintTop_toBottomOf="@id/fragment_home_frame_layout_1"
+        app:layout_constraintTop_toBottomOf="@id/fragment_home_constraint_layout_tool_bar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fragment_home_navigation_linear_layout"/>

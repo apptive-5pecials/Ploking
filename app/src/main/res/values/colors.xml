@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#f56e47</color>
     <color name="colorAccent">#f56e47</color>
 
+    <color name="background_status_bar_transparent">#00000000</color>
+
     <color name="color_text_white">#FFFFFF</color>
     <color name="color_text_black">#000000</color>
     <color name="color_text_green">#3ea055</color>
@@ -16,6 +18,7 @@
     <color name="v2_background_start_color">#f56e47</color>
     <color name="v2_background_center_color">#f56e47</color>
     <color name="v2_background_end_color">#ee9c48</color>
+    <color name="v2_background_main_fragment_home">#f9f6ef</color>
 
     <color name="v2_color_tab_selected">#f56e47</color>
     <color name="v2_color_tab_unselected">#dddddd</color>
