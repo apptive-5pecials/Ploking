@@ -38,9 +38,6 @@ android {
         unitTests.returnDefaultValues = true // this prevents "not mocked" error
     }
 
-    dataBinding {
-        enabled true
-    }
 }
 
 dependencies {
