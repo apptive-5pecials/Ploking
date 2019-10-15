@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="100dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/dial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/compass_dial"
+            android:src="@drawable/v2_image_compass_dial" />
+
+        <ImageView
+            android:id="@+id/hands"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/compass_hands"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:srcCompat="@drawable/v2_image_compass_hands" />
+
+    </FrameLayout>
+
+</LinearLayout>
