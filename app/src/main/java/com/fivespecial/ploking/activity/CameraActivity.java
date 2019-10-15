@@ -1,6 +1,7 @@
 package com.fivespecial.ploking.fragment;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,24 +13,17 @@ import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-
-import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.fivespecial.ploking.activity.TabbedActivity;
-import com.fivespecial.ploking.adapterEtc.CameraUtil;
-import com.fivespecial.ploking.adapterEtc.AlbumDbHelper;
 import com.fivespecial.ploking.R;
+import com.fivespecial.ploking.adapterEtc.AlbumDbHelper;
+import com.fivespecial.ploking.adapterEtc.CameraUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,68 +32,58 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
 
+public class CameraActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener, View.OnClickListener {
+    private TextureView textureView;
+    private ImageView imageView;
+    private ImageView preimg;
 
-public class CameraFragment extends Fragment implements TextureView.SurfaceTextureListener, View.OnClickListener {
-    TextureView textureView;
-    ImageView imageView,preimg;
+    private Camera camera;
+    private List<Camera.Size> supportedPreviewSizes;
+    private android.hardware.Camera.Size previewSize;
+    private AlbumDbHelper dbHelper;
+    private String path;
+    private String FILE_NAME;
 
-    Camera camera;
-    List<Camera.Size> supportedPreviewSizes;
-    android.hardware.Camera.Size previewSize;
-    AlbumDbHelper dbHelper;
-    AlbumFragment albumFragment;
-    String path;
-    String FILE_NAME;
-
-    double lastLon = 0;
-    double lastLat = 0;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
-
-    SoundPool pool;
-    int ddok;
+    private SoundPool pool;
+    private int ddok;
 
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-                pool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
-        ddok=pool.load(getContext(),R.raw.sound,1);
-    }
+        setContentView(R.layout.frament_camera);
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frament_camera, null, false);
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 200);
+        pool = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
+        ddok = pool.load(getApplicationContext(), R.raw.sound, 1);
 
-        }else {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 200);
 
-            textureView = (TextureView)view.findViewById(R.id.textureview);
-            imageView=(ImageView)view.findViewById(R.id.shutter_btn);
-            preimg=(ImageView)view.findViewById(R.id.preimage);
+        } else {
 
-            dbHelper= new AlbumDbHelper(getActivity());
+            textureView = findViewById(R.id.textureview);
+            imageView = findViewById(R.id.shutter_btn);
+            preimg = findViewById(R.id.preimage);
 
+            dbHelper= new AlbumDbHelper(this);
 
             textureView.setSurfaceTextureListener(this);
             imageView.setOnClickListener(this);
 
         }
-        return view;
     }
+
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         try{
-            camera= android.hardware.Camera.open();
+            camera = android.hardware.Camera.open();
 
-            android.hardware.Camera.Parameters parameters=camera.getParameters();
+            android.hardware.Camera.Parameters parameters = camera.getParameters();
             supportedPreviewSizes= ((Camera.Parameters) parameters).getSupportedPreviewSizes();
             if(supportedPreviewSizes != null){
                 previewSize= CameraUtil.getOptimalPreviewSize(supportedPreviewSizes, width, height);
                 ((Camera.Parameters) parameters).setPreviewSize(previewSize.width, previewSize.height);
             }
-            int result=CameraUtil.setCameraDisplayOrientation(getActivity(), 0);
+            int result=CameraUtil.setCameraDisplayOrientation(this , 0);
             ((Camera.Parameters) parameters).setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             ((Camera.Parameters) parameters).setRotation(result);
 
@@ -108,8 +92,8 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
             camera.setPreviewTexture(surface);
             camera.startPreview();
         } catch(Exception e) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.detach(this).attach(this).commit();
+            //FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            //transaction.detach(this).attach(this).commit();
         }
 
     }
@@ -117,10 +101,12 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
 
     }
+
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         return false;
     }
+
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
@@ -137,24 +123,21 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
                     FileOutputStream fos = null;
                     Bitmap bmp = BitmapFactory.decodeByteArray(data,0,data.length);
 
-                    ContextWrapper cw= new ContextWrapper(getContext().getApplicationContext());
+                    ContextWrapper cw= new ContextWrapper(getApplicationContext());
                     File dir= cw.getDir("imageDir", MODE_PRIVATE);
                     if(!dir.exists()) {
                         dir.mkdir();
                     }
                     FILE_NAME = System.currentTimeMillis()+".jpg";
-                    File mypath=new File(dir,FILE_NAME);
+                    File mypath = new File(dir,FILE_NAME);
                     if(!mypath.exists()){
                         mypath.canRead();
                     }
 
                     try {
                         fos = new FileOutputStream(mypath);
-                        //화면이 90도 돌아가는 것을 막아준다.
-                        Bitmap rotatedBitmap1 = null;
-                        rotatedBitmap1= rotateImage(bmp, 90);
-                        //파일을 jpg로 내부 저장소에 저장한다.
-                        rotatedBitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        Bitmap rotatedBitmap1 = rotateImage(bmp, 90); //화면이 90도 돌아가는 것을 막아준다.
+                        rotatedBitmap1.compress(Bitmap.CompressFormat.JPEG, 100, fos); //파일을 jpg로 내부 저장소에 저장한다.
 
 
                     }catch (Exception e) {
@@ -167,9 +150,9 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
                         }
 
                     }
-                    path =dir.getAbsolutePath();
+                    path = dir.getAbsolutePath();
 
-                    SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 
                     double longitude = Double.longBitsToDouble(pref.getLong("lon", Double.doubleToLongBits(0)));
                     double latitude = Double.longBitsToDouble(pref.getLong("lat", Double.doubleToLongBits(0)));
@@ -186,18 +169,14 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
                         e.printStackTrace();
                     }
                     dbHelper.insertData(path, FILE_NAME, longitude, latitude);
-                    ((TabbedActivity)getActivity()).refresh();
+
+                    //((TabbedActivity)getActivity()).refreshAlbumFragment();
+
                     camera.startPreview();
 
                 }
             });
         }
-    }
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-                matrix, true);
     }
 
     @Override
@@ -210,6 +189,13 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
             camera = null;
 
         }
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
     }
 
 }

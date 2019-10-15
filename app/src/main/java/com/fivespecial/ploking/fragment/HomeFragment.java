@@ -1,16 +1,24 @@
 package com.fivespecial.ploking.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Looper;
 import android.text.Html;
 import android.util.Pair;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.fivespecial.ploking.R;
+import com.fivespecial.ploking.RequestCode;
+import com.fivespecial.ploking.activity.TabbedActivity;
 import com.fivespecial.ploking.base.BaseFragment;
 import com.fivespecial.ploking.maps.BinLocation;
 import com.fivespecial.ploking.maps.DataAdapter;
@@ -34,6 +42,7 @@ public class HomeFragment extends BaseFragment {
     private TextView tvDistance;
     private TextView tvKcal;
     private ImageView trashButton;
+    private ImageButton cameraButton;
 
     private TextView nearestBinDescription;
     private TextView nearestBinDistance;
@@ -55,8 +64,8 @@ public class HomeFragment extends BaseFragment {
         mHomeDbHelper = new DataAdapter(getActivity());
 
         //tvDistance = view.findViewById(R.id.home_steps);
-        //tvKcal = view.findViewById(R.id.home_kcals);
-        //trashButton = view.findViewById(R.id.button_trash);
+        tvKcal = view.findViewById(R.id.fragment_home_text_view_today_cal);
+        cameraButton = view.findViewById(R.id.fragment_home_image_button_camera);
 
         nearestBinDescription = view.findViewById(R.id.fragment_home_nearest_bin_description_text_view);
         nearestBinDistance = view.findViewById(R.id.fragment_home_nearest_bin_distance_text_view);
@@ -64,6 +73,13 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void setupListeners(@NotNull View view) {
+
+        cameraButton.setOnClickListener(v -> {
+            if(getActivity() != null) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), CameraActivity.class);
+                startActivityForResult(intent, RequestCode.FRAGMENT_HOME_CAMERA_ACTIVITY_REQ_CODE);
+            }
+        });
 
     }
 
@@ -80,12 +96,7 @@ public class HomeFragment extends BaseFragment {
 
             SharedPreferences sFile = getActivity().getApplicationContext().getSharedPreferences("sFile", Context.MODE_PRIVATE);
 
-            float ftDistance = sFile.getFloat("distance", 0);
-            float ftKcal = sFile.getFloat("Kcal", 0);
-
-            ftDistance = ftDistance / 1000; // 미터->킬로미터
-
-            //tvDistance.setText("총 활동량 \n" + String.format("%.1f", ftDistance) + " km");
+            //float ftKcal = sFile.getFloat("Kcal", 0);
             //tvKcal.setText("백선욱 님은 총\n"+ String.format("%.0f", ftKcal) + "kcal를 소비했습니다.");
         }
     }
@@ -102,6 +113,21 @@ public class HomeFragment extends BaseFragment {
         super.onStop();
 
         removeLocationUpdates(); // Fragment 의 생명주기가 onStop 상태이면, 위치 업데이트를 해제함.
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == Activity.RESULT_OK) {
+
+            if(requestCode == RequestCode.FRAGMENT_HOME_CAMERA_ACTIVITY_REQ_CODE) {
+                if(getActivity() != null){
+                    TabbedActivity tabbedActivity = ((TabbedActivity) getActivity());
+                    tabbedActivity.refreshAlbumFragment();
+                }
+            }
+        }
     }
 
     private void setupFusedLocationClient() {
@@ -135,7 +161,6 @@ public class HomeFragment extends BaseFragment {
 
     private void setLocationCallback() {
         // 정상적으로 위치 업데이트를 받았을 경우, 수신받는 LocationResult 콜백을 설정해주는 함수
-
         mLocationCallback = new LocationCallback() {
 
             @Override

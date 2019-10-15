@@ -48,7 +48,7 @@ public class TabbedActivity extends AppCompatActivity {
         }
     }
 
-    public void refresh(){
+    public void refreshAlbumFragment(){
         AlbumFragment album = (AlbumFragment) mPagerAdapter.getFragment(1);
         album.refresh();
     }
