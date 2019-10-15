@@ -43,5 +43,15 @@
     <string name="fragment_home_nearest_bin_distance_format_kilo_meter">여기서 %dkm</string>
     <string name="fragment_home_nearest_bin_distance_format_meter">여기서 %dm</string>
 
+    <string name="fragment_album_title">갤러리</string>
+
+    <string name="fragment_maps_title">쓰레기통 위치</string>
+    <string name="fragment_maps_linear_layout_inform_time">시간</string>
+    <string name="fragment_maps_linear_layout_inform_distance">이동 거리</string>
+    <string name="fragment_maps_linear_layout_inform_kcal">칼로리</string>
+    <string name="fragment_maps_linear_layout_inform_time_example">00:00</string>
+    <string name="fragment_maps_linear_layout_inform_distance_example">0.0 m</string>
+    <string name="fragment_maps_linear_layout_inform_kcal_example">0 kcal</string>
+
 
 </resources>

@@ -122,11 +122,11 @@ public class GPSFragment extends BaseFragment {
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
         mDbHelper = new DataAdapter(getActivity());
 
-        startButton = view.findViewById(R.id.btn_fragment_four_start);
-        stopButton = view.findViewById(R.id.btn_fragment_four_stop);
-        pauseButton = view.findViewById(R.id.btn_fragment_four_pause);
-        runLayout = view.findViewById(R.id.layout_running);
-        informLayout = view.findViewById(R.id.layout_inform);
+        startButton = view.findViewById(R.id.fragment_maps_image_button_start);
+        stopButton = view.findViewById(R.id.fragment_maps_image_button_stop);
+        pauseButton = view.findViewById(R.id.fragment_maps_image_button_pause);
+        runLayout = view.findViewById(R.id.fragment_maps_linear_layout_running_buttons);
+        informLayout = view.findViewById(R.id.fragment_maps_linear_layout_inform);
 
         //animation
         pauseAppear = AnimationUtils.loadAnimation(getActivity(), R.anim.pausebtn_appear);
@@ -214,7 +214,7 @@ public class GPSFragment extends BaseFragment {
                     .camera(new CameraPosition(new LatLng(35.232286, 129.085166), 14));
 
             MapFragment mapFragment = MapFragment.newInstance(options);
-            getFragmentManager().beginTransaction().add(R.id.fragmentBorc, mapFragment).commit();
+            getFragmentManager().beginTransaction().add(R.id.fragment_maps_frame_layout_map, mapFragment).commit();
 
             //비동기로 NaverMap 객체를 가져옴. NaverMap 객체가 준비되면 callback 의 onMapReady(NaverMap) 호출됨.
             mapFragment.getMapAsync(this::onMapReady);

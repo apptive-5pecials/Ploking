@@ -42,7 +42,7 @@ public class AlbumFragment extends BaseFragment {
 
         if(getActivity() != null) {
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 3);
-            mAlbumRecyclerView = view.findViewById(R.id.recyclerView);
+            mAlbumRecyclerView = view.findViewById(R.id.fragment_gallery_recycler_view);
             mAlbumRecyclerView.setLayoutManager(layoutManager);
             mAlbumRecyclerView.setAdapter(mAlbumAdapter);
         }
