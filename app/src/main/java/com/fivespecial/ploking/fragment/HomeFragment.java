@@ -1,20 +1,16 @@
 package com.fivespecial.ploking.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Looper;
-import android.util.Log;
+import android.text.Html;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fivespecial.ploking.R;
-import com.fivespecial.ploking.activity.TrashActivity;
-import com.fivespecial.ploking.async.CheckTypesTask;
 import com.fivespecial.ploking.base.BaseFragment;
 import com.fivespecial.ploking.maps.BinLocation;
 import com.fivespecial.ploking.maps.DataAdapter;
@@ -27,7 +23,6 @@ import com.google.android.gms.location.LocationServices;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends BaseFragment {
@@ -61,7 +56,7 @@ public class HomeFragment extends BaseFragment {
 
         //tvDistance = view.findViewById(R.id.home_steps);
         //tvKcal = view.findViewById(R.id.home_kcals);
-        trashButton = view.findViewById(R.id.button_trash);
+        //trashButton = view.findViewById(R.id.button_trash);
 
         nearestBinDescription = view.findViewById(R.id.fragment_home_nearest_bin_description_text_view);
         nearestBinDistance = view.findViewById(R.id.fragment_home_nearest_bin_distance_text_view);
@@ -70,16 +65,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void setupListeners(@NotNull View view) {
 
-        trashButton.setOnClickListener(v -> {
-
-            if(getActivity() != null) {
-                CheckTypesTask task = new CheckTypesTask(getActivity());
-                task.execute();
-            }
-
-            Intent intent = new Intent(getActivity(), TrashActivity.class);
-            startActivity(intent);
-        });
     }
 
     @Override
@@ -188,7 +173,8 @@ public class HomeFragment extends BaseFragment {
 
         if(nearestBinDescription != null && nearestBinDistance != null) {
 
-            nearestBinDescription.setText(nearBinLocation.first.getDescription());
+            String description = Html.fromHtml("<u>" + nearBinLocation.first.getDescription() + "</u>").toString();
+            nearestBinDescription.setText(description);
 
             int integerDistance = nearBinLocation.second.intValue();
 

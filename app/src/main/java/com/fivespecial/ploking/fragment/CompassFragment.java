@@ -1,63 +1,53 @@
 package com.fivespecial.ploking.fragment;
 
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.fivespecial.ploking.adapterEtc.Compass;
-import com.fivespecial.ploking.adapterEtc.SOTWFormatter;
 import com.fivespecial.ploking.R;
+import com.fivespecial.ploking.adapterEtc.Compass;
+import com.fivespecial.ploking.base.BaseFragment;
 
-public class CompassFragment extends Fragment {
+import org.jetbrains.annotations.NotNull;
+
+public class CompassFragment extends BaseFragment {
 
     private static final String TAG = "CompassActivity";
 
     private Compass compass;
     private ImageView arrowView;
-    private TextView sotwLabel;  // SOTW is for "side of the world"
 
     private float currentAzimuth;
-    private SOTWFormatter sotwFormatter;
 
-    public CompassFragment() {
-
+    @Override
+    public int getResourceId() {
+        return R.layout.fragment_compass;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view;
-        view = inflater.inflate(R.layout.compass, null);
-
-        sotwFormatter = new SOTWFormatter(getActivity());
+    public void initComponent(@NotNull View view) {
 
         arrowView = view.findViewById(R.id.hands);
-        sotwLabel = view.findViewById(R.id.sotw_label);
+    }
+
+    @Override
+    public void setupListeners(@NotNull View view) {
+
+    }
+
+    @Override
+    public void setupImplementation() {
+
         setupCompass();
 
-        return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "start compass");
+        Log.d(TAG, "start fragment_compass");
         compass.start();
     }
 
@@ -76,50 +66,38 @@ public class CompassFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "stop compass");
         compass.stop();
     }
 
     private void setupCompass() {
-        compass = new Compass(getActivity());
-        Compass.CompassListener cl = getCompassListener();
-        compass.setListener(cl);
-    }
+        if(getActivity() != null) {
+            compass = new Compass(getActivity());
 
-    private void adjustArrow(float azimuth) {
-        /*Log.d(TAG, "will set rotation from " + currentAzimuth + " to "
-                + azimuth);*/
-
-        Animation an = new RotateAnimation(-currentAzimuth, -azimuth,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                0.5f);
-        currentAzimuth = azimuth;
-
-        an.setDuration(500);
-        an.setRepeatCount(0);
-        an.setFillAfter(true);
-
-        arrowView.startAnimation(an);
-    }
-
-    private void adjustSotwLabel(float azimuth) {
-        sotwLabel.setText(sotwFormatter.format(azimuth));
+            Compass.CompassListener cl = getCompassListener();
+            compass.setListener(cl);
+        }
     }
 
     private Compass.CompassListener getCompassListener() {
-        return new Compass.CompassListener() {
-            @Override
-            public void onNewAzimuth(final float azimuth) {
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adjustArrow(azimuth);
-                        adjustSotwLabel(azimuth);
-                    }
-                });
+        return azimuth -> {
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(() ->
+                    adjustCompassArrow(azimuth)
+                );
             }
         };
     }
 
+    private void adjustCompassArrow(float azimuth) {
+        Animation animation = new RotateAnimation(-currentAzimuth, -azimuth,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        currentAzimuth = azimuth;
+
+        animation.setDuration(500);
+        animation.setRepeatCount(0);
+        animation.setFillAfter(true);
+
+        arrowView.startAnimation(animation);
+    }
 }

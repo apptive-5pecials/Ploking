@@ -7,175 +7,271 @@
     android:background="@color/v2_background_main_fragment_home">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_home_constraint_layout_tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="228dp"
-        android:background="@drawable/v2_background_main_gradient"
-        android:paddingTop="28dp"
-        android:paddingBottom="16dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:clipToPadding="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="24sp"
-            android:textColor="@color/color_text_white"
-            android:fontFamily="@font/noto_bold"
-            android:includeFontPadding="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/fragment_home_text_view_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:text="Baek"
-            android:textColor="@color/color_text_white"
-            android:textSize="20sp"
-            android:fontFamily="@font/noto_regular"
-            android:includeFontPadding="false"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/fragment_home_frame_layout_user_profile"
-            app:layout_constraintBottom_toBottomOf="@id/fragment_home_frame_layout_user_profile"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/fragment_home_frame_layout_user_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/v2_background_oval_profile_user"
-            android:elevation="12dp"
-            app:srcCompat="@drawable/v2_image_default_user_profile"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/v2_image_default_user_profile"/>
-        </FrameLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fragment_home_constraint_layout_tool_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="228dp"
+                    android:background="@drawable/v2_background_main_gradient"
+                    android:clipToPadding="false"
+                    android:paddingStart="16dp"
+                    android:paddingTop="28dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/fragment_home_text_view_today_cal_sub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Calories burned today"
-            android:textSize="18sp"
-            android:textColor="@color/color_text_white"
-            android:fontFamily="@font/noto_medium"
-            android:includeFontPadding="false"
-            app:layout_constraintBottom_toTopOf="@id/fragment_home_linear_layout_today_cal"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+                    <FrameLayout
+                        android:id="@+id/fragment_home_frame_layout_user_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/v2_background_oval_profile_user"
+                        android:elevation="12dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/v2_image_default_user_profile">
 
-        <LinearLayout
-            android:id="@+id/fragment_home_linear_layout_today_cal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/v2_image_default_user_profile" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fragment_home_linear_layout_today_cal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent">
+
+                        <TextView
+                            android:id="@+id/fragment_home_text_view_today_cal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:text="53"
+                            android:textColor="@color/color_text_white"
+                            android:textSize="56sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/noto_medium"
+                            android:includeFontPadding="false"
+                            android:text="kcal"
+                            android:textColor="@color/color_text_white"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_bold"
+                        android:includeFontPadding="false"
+                        android:text="@string/app_name"
+                        android:textColor="@color/color_text_white"
+                        android:textSize="24sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/fragment_home_text_view_today_cal_sub_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_medium"
+                        android:includeFontPadding="false"
+                        android:text="Calories burned today"
+                        android:textColor="@color/color_text_white"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toTopOf="@id/fragment_home_linear_layout_today_cal"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:id="@+id/fragment_home_text_view_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/noto_regular"
+                        android:includeFontPadding="false"
+                        android:text="Baek"
+                        android:textColor="@color/color_text_white"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="@id/fragment_home_frame_layout_user_profile"
+                        app:layout_constraintRight_toLeftOf="@id/fragment_home_frame_layout_user_profile"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/fragment_home_text_view_your_steps_sub_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/noto_bold"
+                    android:includeFontPadding="false"
+                    android:text="@string/fragment_home_your_steps_sub_title"
+                    android:textColor="@color/color_text_black"
+                    android:textSize="24sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_home_constraint_layout_tool_bar" />
+
+                <TextView
+                    android:id="@+id/fragment_home_text_view_nearest_trash_can_sub_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/noto_bold"
+                    android:includeFontPadding="false"
+                    android:text="@string/fragment_home_nearest_trash_can_sub_title"
+                    android:textColor="@color/color_text_black"
+                    android:textSize="24sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_home_card_view_your_steps_graph" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fragment_home_card_view_your_steps_graph"
+                    android:layout_width="0dp"
+                    android:layout_height="212dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="6dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_home_text_view_your_steps_sub_title">
+
+                    <ImageView
+                        android:id="@+id/fragment_home_image_view_your_steps_graph"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/v2_image_your_steps_graph" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fragment_home_card_view_nearest_trash_can"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="32dp"
+                    android:background="@drawable/v2_background_radius_8dp_rounded_white"
+                    android:elevation="6dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_home_text_view_nearest_trash_can_sub_title"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <fragment
+                        android:id="@+id/fragment_home_fragment_compass"
+                        android:name="com.fivespecial.ploking.fragment.CompassFragment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"/>
+
+                    <LinearLayout
+                        android:id="@+id/fragment_home_near_bin_linear_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/fragment_home_fragment_compass">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fragment_home_nearest_bin_description_sub_title"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/noto_medium"
+                            android:includeFontPadding="false"/>
+
+                        <TextView
+                            android:id="@+id/fragment_home_nearest_bin_description_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fragment_home_nearest_bin_description_example"
+                            android:textColor="@color/color_text_main_orange"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/noto_medium"
+                            android:includeFontPadding="false"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/fragment_home_nearest_bin_distance_from_here"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="4dp"
+                                android:text="@string/fragment_home_nearest_bin_distance_from_here"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/noto_medium"
+                                android:includeFontPadding="false"/>
+
+                            <TextView
+                                android:id="@+id/fragment_home_nearest_bin_distance_text_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/fragment_home_nearest_bin_distance_example"
+                                android:textColor="@color/color_text_black"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/noto_medium"
+                                android:includeFontPadding="false"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <ImageButton
+            android:id="@+id/fragment_home_image_button_camera"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/v2_background_floating_button_gradient"
+            android:elevation="6dp"
+            app:srcCompat="@drawable/v2_image_camera_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
-
-            <TextView
-                android:id="@+id/fragment_home_text_view_today_cal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="53"
-                android:textColor="@color/color_text_white"
-                android:textSize="56sp"
-                android:includeFontPadding="false"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="kcal"
-                android:textSize="18sp"
-                android:textColor="@color/color_text_white"
-                android:fontFamily="@font/noto_medium"
-                android:includeFontPadding="false"/>
-
-        </LinearLayout>
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:id="@+id/fragment_home_graph_image_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/graph"
-        app:layout_constraintTop_toBottomOf="@id/fragment_home_constraint_layout_tool_bar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fragment_home_navigation_linear_layout"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_home_navigation_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_home_graph_image_view">
-
-        <ImageView
-            android:id="@+id/button_trash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/button_trash" />
-
-        <LinearLayout
-            android:id="@+id/fragment_home_near_bin_linear_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp"
-            app:layout_constraintLeft_toRightOf="@id/fragment_home_compass_fragment"
-            app:layout_constraintRight_toLeftOf="@id/button_trash"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_home_nearest_bin_description_sub_title"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/fragment_home_nearest_bin_description_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_home_nearest_bin_description_example"
-                android:textColor="@color/color_text_green"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/fragment_home_nearest_bin_distance_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragment_home_nearest_bin_distance_example"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <fragment
-            android:id="@+id/fragment_home_compass_fragment"
-            android:name="com.fivespecial.ploking.fragment.CompassFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

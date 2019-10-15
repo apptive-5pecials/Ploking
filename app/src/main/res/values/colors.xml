@@ -10,6 +10,7 @@
     <color name="color_text_black">#000000</color>
     <color name="color_text_green">#3ea055</color>
     <color name="color_text_grey">#dddddd</color>
+    <color name="color_text_main_orange">#f56e47</color>
 
     <color name="v1_line_color_white">#ddd</color>
     <color name="v1_color_green">#3ea055</color>
